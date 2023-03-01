@@ -11,6 +11,8 @@ python = "^3.9"
 Flask = "^2.2.3"
 SQLAlchemy = "^2.0.4"
 pandas = "^1.5.3"
+flask-wtf = "^1.1.1"
+flask-sqlalchemy = "^3.0.3"
 
 
 [build-system]

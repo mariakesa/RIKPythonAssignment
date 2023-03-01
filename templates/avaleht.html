@@ -6,5 +6,13 @@
         crossorigin="anonymous">
         <title>Osauhingute Otsingumootor</title>
     </head>
+    <body>
+        <form action="/" method="post">
+            {{nimeline_otsing.csrf_token}}
+            {{nimeline_otsing.marksona.label}}
+            {{nimeline_otsing.marksona}}
+            {{nimeline_otsing.otsi}}
+        </form>
+    </body>
 
 </html>
