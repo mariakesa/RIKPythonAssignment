@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rikpythonassignment"
+version = "0.1.0"
+description = "RIK Python programming assignment"
+authors = ["Maria Kesa"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.2.3"
+SQLAlchemy = "^2.0.4"
+pandas = "^1.5.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
