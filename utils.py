@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from databases import Session,engine
 from models import Osauhingud,Base
 from sqlalchemy import create_engine
@@ -12,9 +13,8 @@ def init_db():
 
 def nimeline_otsing_paring(marksona):
     with Session() as session:
-        paring = session.query(Osauhingud).filter(Osauhingud.osauhingu_nimi.like("%"+marksona+"%")).all()
-        print(engine.url)
-        paringu_tagastus=pd.DataFrame(paring)
+        paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood).filter(Osauhingud.osauhingu_nimi.ilike("%"+marksona+"%")).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
     return paringu_tagastus
 
 '''

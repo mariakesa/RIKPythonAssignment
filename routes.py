@@ -13,4 +13,5 @@ def avaleht():
         print(nimeline_otsing.marksona.data,paringu_tagastus)
     return render_template('avaleht.html', 
                            nimeline_otsing=nimeline_otsing, 
-                           registri_numbri_otsing=registri_numbri_otsing)
+                           registri_numbri_otsing=registri_numbri_otsing,
+                           df=paringu_tagastus)

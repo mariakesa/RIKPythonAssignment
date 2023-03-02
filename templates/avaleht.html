@@ -13,6 +13,28 @@
             {{nimeline_otsing.marksona}}
             {{nimeline_otsing.otsi}}
         </form>
+        <table>
+            <thead>
+              <tr>
+                {% for column in df.columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in df.values %}
+              <tr>
+                {% for value in row %}
+                {% if loop.index0 == 0 %}
+                <td><a href="/members/{{ value }}">{{ value }}</a></td>
+                {% else %}
+                <td>{{ value }}</td>
+                {% endif %}
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
     </body>
 
 </html>

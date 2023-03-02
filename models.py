@@ -13,3 +13,10 @@ class Osauhingud(Base):
     osauhingu_nimi = Column(String(100), nullable=False)
     registri_kood = Column(Integer, nullable=False)
     asutamise_kuupaev= Column(Date)
+
+    def __repr__(self):
+        return "<User(index='%s', osauhingu nimi='%s', registri kood='%s', asutamise kuupaev='%s')>" % (
+            self.index,
+            self.osauhingu_nimi,
+            self.registri_kood,
+            self.asutamise_kuupaev)
