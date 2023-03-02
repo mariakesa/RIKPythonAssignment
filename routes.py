@@ -23,3 +23,7 @@ def avaleht():
 def osauhingu_andmed(osauhingu_nimi):
     osauhingu_nimi = urllib.parse.unquote(osauhingu_nimi)
     return render_template('osauhingu_andmed.html')
+
+@app.route('/osauhingu_asutamine', methods=['GET','POST'])
+def osauhingu_asutamine():
+    return render_template('osauhingu_asutamine.html')
