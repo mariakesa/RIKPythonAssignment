@@ -14,3 +14,5 @@ def init_db():
     session=Session()
     session.commit()
     session.close()
+
+#init_db()

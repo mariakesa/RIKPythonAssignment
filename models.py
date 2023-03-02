@@ -9,7 +9,7 @@ Base = declarative_base()
 class Osauhingud(Base):
     __tablename__='osauhingud'
 
-    id = Column(Integer, primary_key = True)
-    nimi = Column(String(100), nullable=False)
-    registrikood = Column(Integer, nullable=False)
+    index = Column(Integer, primary_key = True)
+    osauhingu_nimi = Column(String(100), nullable=False)
+    registri_kood = Column(Integer, nullable=False)
     asutamise_kuupaev= Column(Date)
