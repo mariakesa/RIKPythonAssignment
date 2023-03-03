@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template
 from forms import *
-from utils import nimeline_otsing_paring
+from utils import nimeline_otsing_paring, lisa_uus_osauhing_andmebaasi
 import pandas as pd
 import urllib
 
@@ -29,6 +29,11 @@ def osauhingu_asutamine():
     osauhingu_asutamise_vorm = OsauhinguAsutamiseVorm()
     if osauhingu_asutamise_vorm.validate_on_submit():
         print('boom',osauhingu_asutamise_vorm.osauhingu_nimi.data, osauhingu_asutamise_vorm.registrikood.data, osauhingu_asutamise_vorm.asutamise_kuupaev.data)
+        osauhingu_asutamise_dct={}
+        osauhingu_asutamise_dct['osauhingu_nimi']=osauhingu_asutamise_vorm.osauhingu_nimi.data
+        osauhingu_asutamise_dct['registri_kood']=osauhingu_asutamise_vorm.registrikood.data
+        osauhingu_asutamise_dct['asutamise_kuupaev']=osauhingu_asutamise_vorm.asutamise_kuupaev.data
+        lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct)
     else:
         print(osauhingu_asutamise_vorm.errors)
     return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm)
