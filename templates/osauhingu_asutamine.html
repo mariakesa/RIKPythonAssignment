@@ -1,1 +1,16 @@
 {% extends "base.html" %}
+
+{% block main %}
+<div class="col-6">
+    <form action="/" method="post">
+        {{osauhingu_asutamine.csrf_token}}
+        {{osauhingu_asutamine.osauhingu_nimi.label}}
+        {{osauhingu_asutamine.osauhingu_nimi}}
+        {{osauhingu_asutamine.registrikood.label}}
+        {{osauhingu_asutamine.registrikood}}
+        {{osauhingu_asutamine.asutamise_kuupaev.label}}
+        {{osauhingu_asutamine.asutamise_kuupaev}}
+        {{osauhingu_asutamine.asuta}}
+    </form>
+</div>
+{%endblock%}

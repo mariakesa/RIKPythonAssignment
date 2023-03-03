@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, DateField
 from wtforms.validators import DataRequired 
 
 class NimelineOtsinguRiba(FlaskForm):
@@ -8,5 +8,11 @@ class NimelineOtsinguRiba(FlaskForm):
     otsi=SubmitField('Otsi!')
 
 class RegistriOtsinguRiba(FlaskForm):
-    registriotsing=IntegerField('Registrinumber', validators=[DataRequired()])
+    registriotsing=IntegerField('Registrikood', validators=[DataRequired()])
     otsi=SubmitField('Otsi!')
+
+class OsauhinguAsutamiseVorm(FlaskForm):
+    osauhingu_nimi=StringField('Osaühingu nimi', validators=[DataRequired()])
+    registrikood=IntegerField('Registrikood', validators=[DataRequired()])
+    asutamise_kuupaev= DateField('Asutamise kuupäev', validators=[DataRequired()])
+    asuta=SubmitField('Asuta osaühing')
