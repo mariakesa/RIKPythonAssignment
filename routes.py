@@ -26,7 +26,9 @@ def osauhingu_andmed(osauhingu_nimi):
 
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])
 def osauhingu_asutamine():
-    osauhingu_asutamine = OsauhinguAsutamiseVorm()
-    if osauhingu_asutamine.validate_on_submit():
-        print(osauhingu_asutamine.osauhingu_nimi.data, osauhingu_asutamine.registrikood.data, osauhingu_asutamine.asutamise_kuupaev.data)
-    return render_template('osauhingu_asutamine.html', osauhingu_asutamine=osauhingu_asutamine)
+    osauhingu_asutamise_vorm = OsauhinguAsutamiseVorm()
+    if osauhingu_asutamise_vorm.validate_on_submit():
+        print('boom',osauhingu_asutamise_vorm.osauhingu_nimi.data, osauhingu_asutamise_vorm.registrikood.data, osauhingu_asutamise_vorm.asutamise_kuupaev.data)
+    else:
+        print(osauhingu_asutamise_vorm.errors)
+    return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm)

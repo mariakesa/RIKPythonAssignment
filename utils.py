@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from databases import Session,engine
 from models import Osauhingud,Base
-from sqlalchemy import create_engine
 import pandas as pd
 
 def init_db():

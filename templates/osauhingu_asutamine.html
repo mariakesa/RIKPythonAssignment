@@ -2,15 +2,26 @@
 
 {% block main %}
 <div class="col-6">
-    <form action="/" method="post">
-        {{osauhingu_asutamine.csrf_token}}
-        {{osauhingu_asutamine.osauhingu_nimi.label}}
-        {{osauhingu_asutamine.osauhingu_nimi}}
-        {{osauhingu_asutamine.registrikood.label}}
-        {{osauhingu_asutamine.registrikood}}
-        {{osauhingu_asutamine.asutamise_kuupaev.label}}
-        {{osauhingu_asutamine.asutamise_kuupaev}}
-        {{osauhingu_asutamine.asuta}}
+    <h2>Osaühingu asutamine</h2>
+    <form action="/osauhingu_asutamine" method="POST">
+        {{osauhingu_asutamise_vorm.csrf_token}}
+        <div class="container">
+            <div class="form-group">
+                {{osauhingu_asutamise_vorm.osauhingu_nimi.label}}
+                {{osauhingu_asutamise_vorm.osauhingu_nimi}}
+            </div>
+            <div class="form-group">
+                {{osauhingu_asutamise_vorm.registrikood.label}}
+                {{osauhingu_asutamise_vorm.registrikood}}
+            </div>
+            <div class="form-group">
+                {{osauhingu_asutamise_vorm.asutamise_kuupaev.label}}
+                {{osauhingu_asutamise_vorm.asutamise_kuupaev}}
+            </div>
+            <div class="form-group">
+                {{osauhingu_asutamise_vorm.asuta}}
+            </div>
+        </div>
     </form>
 </div>
 {%endblock%}
