@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div class="col-6">
+<div class="container">
     <h2>Osaühingu asutamine</h2>
     <form action="/osauhingu_asutamine" method="POST">
         {{osauhingu_asutamise_vorm.csrf_token}}
@@ -23,5 +23,10 @@
             </div>
         </div>
     </form>
+</div>
+<div class="container" id="edu_sonum">
+    {% if edu_sonum != None%}
+        {{edu_sonum}}
+    {% endif %}
 </div>
 {%endblock%}
