@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template
 from forms import *
-from utils import nimeline_otsing_paring, lisa_uus_osauhing_andmebaasi
+from utils import nimeline_otsing_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid
 import pandas as pd
 import urllib
 
@@ -22,7 +22,8 @@ def avaleht():
 @app.route('/osauhingud/<osauhingu_nimi>')
 def osauhingu_andmed(osauhingu_nimi):
     osauhingu_nimi = urllib.parse.unquote(osauhingu_nimi)
-    return render_template('osauhingu_andmed.html')
+    andmed = pari_osauhingu_tabelid(osauhingu_nimi)
+    return render_template('osauhingu_andmed.html',osauhingu_nimi=osauhingu_nimi,andmed=andmed)
 
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])
 def osauhingu_asutamine():

@@ -1,1 +1,16 @@
 {% extends "base.html" %}
+
+{% block main %}
+<h2>Osaühingu {{osauhingu_nimi}} andmed</h2>
+<div class="container">
+    <div class="row">
+        Osaühingu nimi: {{andmed.iloc[0]['Osaühingu nimi']}}
+    </div>
+    <div class="row">
+        Osaühingu registrikood: {{andmed.iloc[0]['Registrikood']}}
+    </div>
+    <div class="row">
+        Osaühingu asutamise kuupäev: {{andmed.iloc[0]['Asutamise kuupäev']}}
+    </div>
+</div>
+{% endblock %}
