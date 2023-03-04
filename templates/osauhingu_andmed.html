@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 
 {% block main %}
-<h2>Osaühingu {{osauhingu_nimi}} andmed</h2>
 <div class="container">
-    <div class="row">
-        Osaühingu nimi: {{andmed.iloc[0]['Osaühingu nimi']}}
+    <div class="col-6">
+        <h2>Osaühingu {{osauhingu_nimi}} andmed</h2>
     </div>
-    <div class="row">
-        Osaühingu registrikood: {{andmed.iloc[0]['Registrikood']}}
+    <div class="col-6">
+        <div class="row">
+            <span style="color:lightsalmon;font-weight:bold;">Osaühingu nimi:</span> {{andmed.iloc[0]['Osaühingu nimi']}}
+        </div>
+        <div class="row">
+            <span style="color:pink;font-weight:bold;">Osaühingu registrikood:</span> {{andmed.iloc[0]['Registrikood']}}
+        </div>
+        <div class="row">
+            <span style="color:lightseagreen;font-weight:bold;">Osaühingu asutamise kuupäev:</span> {{andmed.iloc[0]['Asutamise kuupäev']}}
+        </div>
     </div>
-    <div class="row">
-        Osaühingu asutamise kuupäev: {{andmed.iloc[0]['Asutamise kuupäev']}}
+    <div class="col-6" id="osauhing_avatar">
+        <img src="https://api.dicebear.com/5.x/pixel-art/svg?seed={{ [1,n,100]|random() }}&size=96" alt="avatar"/>
     </div>
 </div>
 {% endblock %}
