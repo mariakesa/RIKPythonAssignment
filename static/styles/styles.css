@@ -8,3 +8,7 @@
     display: inline-block;
     border:rgb(221, 93, 114) 3px solid;
 }
+
+#lisa-fuus-button {
+    vertical-align: top;
+}
