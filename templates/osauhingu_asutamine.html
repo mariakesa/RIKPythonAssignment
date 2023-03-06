@@ -21,22 +21,22 @@
             <button type="button" id="lisa-fuus-button" onclick="addFuusAsutajaBox()">+</button>
             <button id="eemalda-fuus-button">-</button>
             <div id="fuus-asutajad">
-                <div class="fuus-asutaja-box">
+                <fielset class="fuus-asutaja-box">
                     {% for field in osauhingu_asutamise_vorm.fuus_is_asutajad %}
                         <div class="form-group">
                             {{field.fuus_is_asutaja.label}}
                         </div>
                         <div class="form-group">
-                            {{field.fuus_is_asutaja}}
+                            {{field.fuus_is_asutaja(placeholder="Nimi")}}
                         </div>
                         <div class="form-group">
                             {{field.fuus_is_asutaja_ik.label}}
                         </div>
                         <div class="form-group">
-                            {{field.fuus_is_asutaja_ik}}
+                            {{field.fuus_is_asutaja_ik(placeholder="Isikukood")}}
                         </div> 
                     {% endfor %}
-                </div>  
+                    </fieldset>  
             </div>
             <div class="form-group">
                 {{osauhingu_asutamise_vorm.asuta}}
@@ -51,22 +51,31 @@
 </div>
 
 <script>
-    function addFuusAsutajaBox() {
-        // create new div element with fuus-asutaja-box class
-        var newBox = document.createElement("div");
-        newBox.classList.add("fuus-asutaja-box");
-        console.log(newBox);
-        // clone children of existing fuus-asutaja-box div
-        var existingBox = document.querySelector(".fuus-asutaja-box");
-        console.log(existingBox)
-        
-        newBox.innerHTML=existingBox.innerHTML
-        console.log(newBox)
-        
-        // append new div element to fuus-asutajad div
-        var fuusAsutajad = document.querySelector("#fuus-asutajad");
-        fuusAsutajad.appendChild(newBox);
-        
-    }
+function addFuusAsutajaBox() {
+  var box = document.createElement("div");
+  box.className = "fuus-asutaja-box";
+
+  var label = document.createElement("label");
+  label.innerHTML = "Asutaja";
+  box.appendChild(label);
+
+  var input = document.createElement("input");
+  input.type = "text";
+  input.name = "fuus_is_asutajad-" + document.querySelectorAll(".fuus-asutaja-box").length;
+  box.appendChild(input);
+
+  var label2 = document.createElement("label");
+  label2.innerHTML = "Asutaja isikukood";
+  box.appendChild(label2);
+
+  var input2 = document.createElement("input");
+  input2.type = "text";
+  input2.name = "fuus_is_asutajad_ik-" + document.querySelectorAll(".fuus-asutaja-box").length;
+  box.appendChild(input2);
+
+  var parent = document.getElementById("fuus-asutajad");
+  parent.appendChild(box);
+}
+
 </script>
 {%endblock%}
