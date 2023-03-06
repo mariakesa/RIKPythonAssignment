@@ -35,6 +35,8 @@ def osauhingu_asutamine():
         osauhingu_asutamise_dct['osauhingu_nimi']=osauhingu_asutamise_vorm.osauhingu_nimi.data
         osauhingu_asutamise_dct['registri_kood']=osauhingu_asutamise_vorm.registrikood.data
         osauhingu_asutamise_dct['asutamise_kuupaev']=osauhingu_asutamise_vorm.asutamise_kuupaev.data
-        #lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct)
+        osauhingu_asutamise_vorm.osauhingu_nimi.data=None
+        osauhingu_asutamise_vorm.registrikood.data=None
+        osauhingu_asutamise_vorm.asutamise_kuupaev.data=None
         edu='Osaühing on edukalt loodud.'
     return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm, edu_sonum=edu)
