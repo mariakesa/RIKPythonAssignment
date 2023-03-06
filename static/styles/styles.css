@@ -1,0 +1,10 @@
+#front-title {
+    font-family: 'Tilt Prism', serif;
+    font-size: 32px;
+    color: rgb(221, 93, 114);
+}
+
+.fuus-asutaja-box {
+    display: inline-block;
+    border:rgb(221, 93, 114) 3px solid;
+}

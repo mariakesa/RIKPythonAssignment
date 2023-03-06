@@ -15,4 +15,6 @@ class OsauhinguAsutamiseVorm(FlaskForm):
     osauhingu_nimi=StringField('Osaühingu nimi', validators=[DataRequired()])
     registrikood=IntegerField('Registrikood', validators=[DataRequired()])
     asutamise_kuupaev= DateField('Asutamise kuupäev', validators=[DataRequired()])
+    fuus_is_asutaja = StringField('Füüsilisest isikust osanik', validators=[DataRequired()])
+    fuus_is_asutaja_ik = StringField('Füüsilisest isikust osaniku isikukood', validators=[DataRequired()])
     asuta=SubmitField('Asuta osaühing')
