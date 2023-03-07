@@ -82,7 +82,7 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
                 #join(Osauhingud.fuusilised_osanikud).\
                 #filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
         #fuusilised_osanikud_paringu_tagastus=pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
-        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, Osauhingud.osauhingu_nimi, many_to_many_table_fuusilised_isikud.c.osakapital, many_to_many_table_fuusilised_isikud.c.is_asutaja)\
+        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, FuusilisestIsikustOsanikud.isikukood, many_to_many_table_fuusilised_isikud.c.osakapital, many_to_many_table_fuusilised_isikud.c.is_asutaja)\
                 .join(many_to_many_table_fuusilised_isikud, FuusilisestIsikustOsanikud.index == many_to_many_table_fuusilised_isikud.c.right_id_osanikud)\
                 .join(Osauhingud, Osauhingud.index == many_to_many_table_fuusilised_isikud.c.left_id_osauhingud)\
                 .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
@@ -91,7 +91,7 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
         #juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, JuriidilisestIsikustOsanikud.registrikood).\
                 #join(Osauhingud.juriidilised_osanikud).\
                 #filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, Osauhingud.osauhingu_nimi, many_to_many_table_juriidilised_isikud.c.osakapital, many_to_many_table_juriidilised_isikud.c.is_asutaja)\
+        juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, JuriidilisestIsikustOsanikud.registrikood, many_to_many_table_juriidilised_isikud.c.osakapital, many_to_many_table_juriidilised_isikud.c.is_asutaja)\
                 .join(many_to_many_table_juriidilised_isikud, JuriidilisestIsikustOsanikud.index == many_to_many_table_juriidilised_isikud.c.right_id_osanikud)\
                 .join(Osauhingud, Osauhingud.index == many_to_many_table_juriidilised_isikud.c.left_id_osauhingud)\
                 .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
