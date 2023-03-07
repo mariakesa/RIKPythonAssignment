@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect
 from forms import *
-from utils import nimeline_otsing_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
+from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
 import pandas as pd
 import urllib
 
@@ -14,12 +14,20 @@ def avaleht():
     fuus_isikud_ik_otsing = FuusIsikudIsikukoodiOtsing()
     juur_isikud_nimeline_otsing = JuriidilisedIsikudNimelineOtsing()
     juur_isikud_rk_otsing = JuriidilisedIsikudRegistrikoodiOtsing()
-    paringu_tagastus=pd.DataFrame()
+    paringu_tagastus = pd.DataFrame()
     if nimeline_otsing.validate_on_submit():
-        paringu_tagastus=nimeline_otsing_paring(nimeline_otsing.marksona.data)
+        paringu_tagastus = nimeline_otsing_paring(nimeline_otsing.marksona.data)
         print(nimeline_otsing.marksona.data,paringu_tagastus)
     if registri_numbri_otsing.validate_on_submit():
-        paringu_tagastus=registri_otsing_paring(registri_numbri_otsing.registrikood.data)
+        paringu_tagastus = registri_otsing_paring(registri_numbri_otsing.registrikood.data)
+    if fuus_isikud_nimeline_otsing.validate_on_submit():
+        paringu_tagastus = fuus_isikud_nimi_paring(fuus_isikud_nimeline_otsing.fuus_is_marksona.data)
+    if fuus_isikud_ik_otsing.validate_on_submit():
+        paringu_tagastus = None
+    if juur_isikud_nimeline_otsing.validate_on_submit():
+        paringu_tagastus = None
+    if juur_isikud_rk_otsing.validate_on_submit():
+        paringu_tagastus = None
     return render_template('avaleht.html', 
                             nimeline_otsing = nimeline_otsing, 
                             registri_otsing = registri_numbri_otsing,

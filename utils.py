@@ -30,6 +30,16 @@ def registri_otsing_paring(registrikood):
         print(paringu_tagastus)
     return paringu_tagastus
 
+def fuus_isikud_nimi_paring(marksona):
+    with Session() as session:
+        paring = session.query(Osauhingud.osauhingu_nimi, Osauhingud.registri_kood).\
+            join(Osauhingud.fuusilised_osanikud).\
+            filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
+        print(paringu_tagastus)
+    return paringu_tagastus
+        
+
 def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
     with Session() as session:
         row = Osauhingud(**osauhingu_asutamise_dct)
