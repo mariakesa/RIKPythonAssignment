@@ -7,7 +7,9 @@ def init_db():
     import models
     with Session() as session:
         pd.read_json('test_andmestik.json').to_sql('osauhingud',con=engine)
-        pd.read_json('fuusilised_isikud_test.json').to_sql('fuusilisest_isikust_osanikud',con=engine)
+        fi_df=pd.read_json('fuusilised_isikud_test.json')
+        fi_df['isikukood']=fi_df['isikukood'].astype(str)
+        fi_df.to_sql('fuusilisest_isikust_osanikud',con=engine)
         pd.read_json('juriidilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',con=engine)
         pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',con=engine)
         pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',con=engine)
@@ -32,10 +34,11 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
         paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev).filter_by(osauhingu_nimi=osauhingu_nimi).first()
         print(paring)
         paringu_tagastus=pd.DataFrame([[paring[0], paring[1], paring[2]]], columns=['Osaühingu nimi', 'Registrikood', 'Asutamise kuupäev'])
-        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud).\
+        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, FuusilisestIsikustOsanikud.isikukood).\
                 join(Osauhingud.fuusilised_osanikud).\
                 filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        print(fuusilised_osanikud_paring)
+        fuusilised_osanikud_paringu_tagastus=pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        print(fuusilised_osanikud_paringu_tagastus)
     return paringu_tagastus
 
 '''
