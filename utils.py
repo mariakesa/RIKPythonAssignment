@@ -9,8 +9,8 @@ def init_db():
         pd.read_json('test_andmestik.json').to_sql('osauhingud',con=engine)
         pd.read_json('juriidilised_isikud_test.json').to_sql('fuusilisest_isikust_osanikud',con=engine)
         pd.read_json('fuusilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',con=engine)
-        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_tabel_fuusilised_isikud',con=engine)
-        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('juriidilised_isikust_osanikud',con=engine)
+        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',con=engine)
+        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',con=engine)
         session.commit()
 
 
