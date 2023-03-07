@@ -24,7 +24,7 @@ class JuriidilisedIsikudNimelineOtsing(FlaskForm):
     otsi=SubmitField('Otsi!')
 
 class JuriidilisedIsikudRegistrikoodiOtsing(FlaskForm):
-    registrikood=IntegerField('Juuridilisest osanikust isiku registrikood', validators=[DataRequired()])
+    juur_is_registrikood=IntegerField('Juuridilisest osanikust isiku registrikood', validators=[DataRequired()])
     otsi=SubmitField('Otsi!')
 
 class FuusIsikudVorm(Form):
