@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from databases import Session,engine
-from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud, many_to_many_table_fuusilised_isikud
+from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud, many_to_many_table_fuusilised_isikud, many_to_many_table_juriidilised_isikud
 import pandas as pd
 
 def init_db():
@@ -86,12 +86,17 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
                 .join(many_to_many_table_fuusilised_isikud, FuusilisestIsikustOsanikud.index == many_to_many_table_fuusilised_isikud.c.right_id_osanikud)\
                 .join(Osauhingud, Osauhingud.index == many_to_many_table_fuusilised_isikud.c.left_id_osauhingud)\
                 .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        fuusilised_osanikud_paringu_tagastus = pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi','Isikukood','Osakapital','Asutaja'])
+        fuusilised_osanikud_paringu_tagastus = pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi','Isikukood','Osakapital','Asutaja?'])
         print(fuusilised_osanikud_paringu_tagastus)
-        juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, JuriidilisestIsikustOsanikud.registrikood).\
-                join(Osauhingud.juriidilised_osanikud).\
-                filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        juriidilised_osanikud_paringu_tagastus=pd.DataFrame(juriidilised_osanikud_paring, columns=['Juriidilisest isikust osaniku nimi', 'Registrikood'])
+        #juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, JuriidilisestIsikustOsanikud.registrikood).\
+                #join(Osauhingud.juriidilised_osanikud).\
+                #filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
+        juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, Osauhingud.osauhingu_nimi, many_to_many_table_juriidilised_isikud.c.osakapital, many_to_many_table_juriidilised_isikud.c.is_asutaja)\
+                .join(many_to_many_table_juriidilised_isikud, JuriidilisestIsikustOsanikud.index == many_to_many_table_juriidilised_isikud.c.right_id_osanikud)\
+                .join(Osauhingud, Osauhingud.index == many_to_many_table_juriidilised_isikud.c.left_id_osauhingud)\
+                .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
+        juriidilised_osanikud_paringu_tagastus = pd.DataFrame(juriidilised_osanikud_paring, columns=['Juriidilisest isikust osaniku nimi','Registrikood','Osakapital','Asutaja'])
+     
     return paringu_tagastus, fuusilised_osanikud_paringu_tagastus, juriidilised_osanikud_paringu_tagastus
 
 '''
