@@ -27,6 +27,30 @@
                         {{registri_otsing.registrikood}}
                         {{registri_otsing.otsi}}
                     </form>
+                    <form action="/" method="post">
+                        {{fuus_isikud_nimeline_otsing.csrf_token}}
+                        {{fuus_isikud_nimeline_otsing.fuus_is_marksona.label}}
+                        {{fuus_isikud_nimeline_otsing.fuus_is_marksona}}
+                        {{fuus_isikud_nimeline_otsing.otsi}}
+                    </form>
+                    <form action="/" method="post">
+                        {{fuus_isikud_ik_otsing.csrf_token}}
+                        {{fuus_isikud_ik_otsing.isikukood.label}}
+                        {{fuus_isikud_ik_otsing.isikukood}}
+                        {{fuus_isikud_ik_otsing.otsi}}
+                    </form>
+                    <form action="/" method="post">
+                        {{juur_isikud_nimeline_otsing.csrf_token}}
+                        {{juur_isikud_nimeline_otsing.juur_is_marksona.label}}
+                        {{juur_isikud_nimeline_otsing.juur_is_marksona}}
+                        {{juur_isikud_nimeline_otsing.otsi}}
+                    </form>
+                    <form action="/" method="post">
+                        {{juur_isikud_rk_otsing.csrf_token}}
+                        {{juur_isikud_rk_otsing.registrikood.label}}
+                        {{juur_isikud_rk_otsing.registrikood}}
+                        {{juur_isikud_rk_otsing.otsi}}
+                    </form>
                     <a href="/osauhingu_asutamine" class="btn btn-primary">Asuta osaühing</a>
                     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                     <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_KxMUoYlkC3.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop controls autoplay></lottie-player>

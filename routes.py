@@ -10,6 +10,10 @@ import urllib
 def avaleht():
     nimeline_otsing = NimelineOtsinguRiba()
     registri_numbri_otsing = RegistriOtsinguRiba()
+    fuus_isikud_nimeline_otsing = FuusIsikudNimelineOtsing()
+    fuus_isikud_ik_otsing = FuusIsikudIsikukoodiOtsing()
+    juur_isikud_nimeline_otsing = JuriidilisedIsikudNimelineOtsing()
+    juur_isikud_rk_otsing = JuriidilisedIsikudRegistrikoodiOtsing()
     paringu_tagastus=pd.DataFrame()
     if nimeline_otsing.validate_on_submit():
         paringu_tagastus=nimeline_otsing_paring(nimeline_otsing.marksona.data)
@@ -17,9 +21,13 @@ def avaleht():
     if registri_numbri_otsing.validate_on_submit():
         paringu_tagastus=registri_otsing_paring(registri_numbri_otsing.registrikood.data)
     return render_template('avaleht.html', 
-                           nimeline_otsing=nimeline_otsing, 
-                           registri_otsing=registri_numbri_otsing,
-                           df=paringu_tagastus)
+                            nimeline_otsing = nimeline_otsing, 
+                            registri_otsing = registri_numbri_otsing,
+                            fuus_isikud_nimeline_otsing = fuus_isikud_nimeline_otsing,
+                            fuus_isikud_ik_otsing = fuus_isikud_ik_otsing,
+                            juur_isikud_nimeline_otsing = juur_isikud_nimeline_otsing,
+                            juur_isikud_rk_otsing = juur_isikud_rk_otsing,
+                            df=paringu_tagastus)
 
 @app.route('/osauhingud/<osauhingu_nimi>')
 def osauhingu_andmed(osauhingu_nimi):
