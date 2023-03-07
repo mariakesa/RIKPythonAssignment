@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect
 from forms import *
-from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, fuus_isikud_ik_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
+from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, fuus_isikud_ik_paring, juur_isikud_nimi_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
 import pandas as pd
 import urllib
 
@@ -25,7 +25,7 @@ def avaleht():
     if fuus_isikud_ik_otsing.validate_on_submit():
         paringu_tagastus = fuus_isikud_ik_paring(fuus_isikud_ik_otsing.isikukood.data)
     if juur_isikud_nimeline_otsing.validate_on_submit():
-        paringu_tagastus = None
+        paringu_tagastus = juur_isikud_nimi_paring(juur_isikud_nimeline_otsing.juur_is_marksona.data)
     if juur_isikud_rk_otsing.validate_on_submit():
         paringu_tagastus = None
     return render_template('avaleht.html', 
@@ -55,6 +55,7 @@ def osauhingu_asutamine():
         osauhingu_asutamise_vorm.osauhingu_nimi.data=None
         osauhingu_asutamise_vorm.registrikood.data=None
         osauhingu_asutamise_vorm.asutamise_kuupaev.data=None
+        #lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct)
         edu='Osaühing on edukalt loodud.'
         return redirect('/osauhingud/'+osauhingu_asutamise_dct['osauhingu_nimi'])
     else:

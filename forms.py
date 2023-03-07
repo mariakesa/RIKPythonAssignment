@@ -20,7 +20,7 @@ class FuusIsikudIsikukoodiOtsing(FlaskForm):
     otsi=SubmitField('Otsi!')
 
 class JuriidilisedIsikudNimelineOtsing(FlaskForm):
-    juur_is_marksona=IntegerField('Juuridilisest osanikust isiku nimi', validators=[DataRequired()])
+    juur_is_marksona=StringField('Juuridilisest osanikust isiku nimi', validators=[DataRequired()])
     otsi=SubmitField('Otsi!')
 
 class JuriidilisedIsikudRegistrikoodiOtsing(FlaskForm):
