@@ -8,7 +8,7 @@ class NimelineOtsinguRiba(FlaskForm):
     otsi=SubmitField('Otsi!')
 
 class RegistriOtsinguRiba(FlaskForm):
-    registriotsing=IntegerField('Registrikood', validators=[DataRequired()])
+    registrikood=IntegerField('Registrikood', validators=[DataRequired()])
     otsi=SubmitField('Otsi!')
 
 class FuusIsikudVorm(Form):
