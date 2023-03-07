@@ -12,6 +12,8 @@ many_to_many_table_fuusilised_isikud = Table(
     Base.metadata,
     Column("left_id_osauhingud", ForeignKey("osauhingud.index"), primary_key=True),
     Column("right_id_osanikud", ForeignKey("fuusilisest_isikust_osanikud.index"), primary_key=True),
+    Column("osakapital"),
+    Column("is_asutaja")
 )
 
 many_to_many_table_juriidilised_isikud = Table(
@@ -19,6 +21,8 @@ many_to_many_table_juriidilised_isikud = Table(
     Base.metadata,
     Column("left_id_osauhingud", ForeignKey("osauhingud.index"), primary_key=True),
     Column("right_id_osanikud", ForeignKey("juriidilisest_isikust_osanikud.index"), primary_key=True),
+    Column("osakapital"),
+    Column("is_asutaja")
 )
 
 class Osauhingud(Base):
