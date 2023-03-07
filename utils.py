@@ -23,6 +23,13 @@ def nimeline_otsing_paring(marksona):
         print(paringu_tagastus)
     return paringu_tagastus
 
+def registri_otsing_paring(registrikood):
+    with Session() as session:
+        paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood).filter(Osauhingud.registri_kood==registrikood).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
+        print(paringu_tagastus)
+    return paringu_tagastus
+
 def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
     with Session() as session:
         row = Osauhingud(**osauhingu_asutamise_dct)
