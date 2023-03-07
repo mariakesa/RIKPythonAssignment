@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect
 from forms import *
-from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, fuus_isikud_ik_paring, juur_isikud_nimi_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
+from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, fuus_isikud_ik_paring, juur_isikud_nimi_paring, juur_isikud_rk_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
 import pandas as pd
 import urllib
 
@@ -27,7 +27,7 @@ def avaleht():
     if juur_isikud_nimeline_otsing.validate_on_submit():
         paringu_tagastus = juur_isikud_nimi_paring(juur_isikud_nimeline_otsing.juur_is_marksona.data)
     if juur_isikud_rk_otsing.validate_on_submit():
-        paringu_tagastus = None
+        paringu_tagastus = juur_isikud_rk_paring(juur_isikud_rk_otsing.juur_is_registrikood.data)
     return render_template('avaleht.html', 
                             nimeline_otsing = nimeline_otsing, 
                             registri_otsing = registri_numbri_otsing,
