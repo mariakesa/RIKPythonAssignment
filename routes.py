@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template
+from flask import render_template, redirect
 from forms import *
 from utils import nimeline_otsing_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid
 import pandas as pd
@@ -28,7 +28,6 @@ def osauhingu_andmed(osauhingu_nimi):
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])
 def osauhingu_asutamine():
     osauhingu_asutamise_vorm = OsauhinguAsutamiseVorm()
-    edu=None
     if osauhingu_asutamise_vorm.validate_on_submit():
         print('boom',osauhingu_asutamise_vorm.fuus_is_asutajad.data)
         osauhingu_asutamise_dct={}
@@ -39,4 +38,7 @@ def osauhingu_asutamine():
         osauhingu_asutamise_vorm.registrikood.data=None
         osauhingu_asutamise_vorm.asutamise_kuupaev.data=None
         edu='Osaühing on edukalt loodud.'
+        return redirect('/osauhingud/'+osauhingu_asutamise_dct['osauhingu_nimi'])
+    else:
+        edu='Andmed ei ole andmebaasi salvestatud.'
     return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm, edu_sonum=edu)

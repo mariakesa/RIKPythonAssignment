@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from databases import Session,engine
-from models import Osauhingud
+from models import Osauhingud, FuusilisestIsikustOsanikud
 import pandas as pd
 
 def init_db():
@@ -32,6 +32,10 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
         paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev).filter_by(osauhingu_nimi=osauhingu_nimi).first()
         print(paring)
         paringu_tagastus=pd.DataFrame([[paring[0], paring[1], paring[2]]], columns=['Osaühingu nimi', 'Registrikood', 'Asutamise kuupäev'])
+        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud).\
+                join(Osauhingud.fuusilised_osanikud).\
+                filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
+        print(fuusilised_osanikud_paring)
     return paringu_tagastus
 
 '''

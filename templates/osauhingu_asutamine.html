@@ -36,44 +36,44 @@
 
 <script>
 
-function wrap_form_group(elem) {
-  var form_group = document.createElement("div");
-  form_group.className = "form-group";
-  form_group.appendChild(elem);
-  return form_group;
+function wrapFormGroup(elem) {
+  var formGroup = document.createElement("div");
+  formGroup.className = "form-group";
+  formGroup.appendChild(elem);
+  return formGroup;
 }
-function addFuusAsutajaBox() {
-  // get the number of existing boxes
-  var numBoxes = document.querySelectorAll(".fuus-asutaja-box").length;
+    function addFuusAsutajaBox() {
+    // get the number of existing boxes
+    var numBoxes = document.querySelectorAll(".fuus-asutaja-box").length;
 
-  // create a new box
-  var box = document.createElement("div");
-  box.className = "fuus-asutaja-box";
+    // create a new box
+    var box = document.createElement("div");
+    box.className = "fuus-asutaja-box";
 
-  var label = document.createElement("label");
-  label.innerHTML = "Asutaja";
-  box.appendChild(wrap_form_group(label));
+    var label = document.createElement("label");
+    label.innerHTML = "Asutaja";
+    box.appendChild(wrapFormGroup(label));
 
-  var input = document.createElement("input");
-  input.type = "text";
-  input.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja';
-  box.appendChild(wrap_form_group(input));
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja';
+    box.appendChild(wrapFormGroup(input));
 
-  var label2 = document.createElement("label");
-  label2.innerHTML = "Asutaja isikukood";
-  box.appendChild(wrap_form_group(label2));
+    var label2 = document.createElement("label");
+    label2.innerHTML = "Asutaja isikukood";
+    box.appendChild(warpFormGroup(label2));
 
-  var input2 = document.createElement("input");
-  input2.type = "text";
-  input2.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja_ik';
-  box.appendChild(wrap_form_group(input2));
+    var input2 = document.createElement("input");
+    input2.type = "text";
+    input2.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja_ik';
+    box.appendChild(wrapFormGroup(input2));
 
-  // add the new box to the page
-  var parent = document.getElementById("fuus-asutajad");
-  parent.appendChild(box);
-}
+    // add the new box to the page
+    var parent = document.getElementById("fuus-asutajad");
+    parent.appendChild(box);
+    }
 
 
-addFuusAsutajaBox();
+    addFuusAsutajaBox();
 </script>
 {%endblock%}
