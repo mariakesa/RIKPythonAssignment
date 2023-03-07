@@ -38,6 +38,15 @@ def fuus_isikud_nimi_paring(marksona):
         paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
         print(paringu_tagastus)
     return paringu_tagastus
+
+def fuus_isikud_ik_paring(isikukood):
+    with Session() as session:
+        paring = session.query(Osauhingud.osauhingu_nimi, Osauhingud.registri_kood).\
+            join(Osauhingud.fuusilised_osanikud).\
+            filter(FuusilisestIsikustOsanikud.isikukood==isikukood).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
+        print(paringu_tagastus)
+    return paringu_tagastus
         
 
 def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):

@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect
 from forms import *
-from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
+from utils import nimeline_otsing_paring, fuus_isikud_nimi_paring, fuus_isikud_ik_paring, lisa_uus_osauhing_andmebaasi, pari_osauhingu_tabelid, registri_otsing_paring
 import pandas as pd
 import urllib
 
@@ -23,7 +23,7 @@ def avaleht():
     if fuus_isikud_nimeline_otsing.validate_on_submit():
         paringu_tagastus = fuus_isikud_nimi_paring(fuus_isikud_nimeline_otsing.fuus_is_marksona.data)
     if fuus_isikud_ik_otsing.validate_on_submit():
-        paringu_tagastus = None
+        paringu_tagastus = fuus_isikud_ik_paring(fuus_isikud_ik_otsing.isikukood.data)
     if juur_isikud_nimeline_otsing.validate_on_submit():
         paringu_tagastus = None
     if juur_isikud_rk_otsing.validate_on_submit():
