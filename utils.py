@@ -39,7 +39,7 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
                 filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
         fuusilised_osanikud_paringu_tagastus=pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
         print(fuusilised_osanikud_paringu_tagastus)
-    return paringu_tagastus
+    return paringu_tagastus, fuusilised_osanikud_paringu_tagastus
 
 '''
 [(0, 'Toomsalu, Kõiv and Toots', 9127513, '1993-05-03'), (1, 'Komarov, Kaljuvee and Sirel', 5633978, '2009-04-22'), (2, 'Borissov-Schmidt', 6063902, '1993-07-31'), (3, 'Kuznetsov, Lillemets and Koitla', 9623269, '2007-07-16'), (4, 'Kaljuste, Kutsar and Põder', 8414787, '2014-07-13'), (5, 'Tamme, Poom and Sokolov', 6224231, '1996-05-06'), (6, 'Paap, Toomsalu and Teder', 9308165, '2004-12-29'), (7, 'Jermakov, Luht and Põllu', 2245225, '2016-12-06')  ... displaying 10 of 100 total bound parameter sets ...  (98, 'Tuul-Paap', 4534526, '1995-05-18'), (99, 'Tiik Ltd', 1250669, '1990-09-14')]

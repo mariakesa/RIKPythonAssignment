@@ -7,15 +7,33 @@
     </div>
     <div class="col-6">
         <div class="row">
-            <span style="color:lightsalmon;font-weight:bold;">Osaühingu nimi:</span> {{andmed.iloc[0]['Osaühingu nimi']}}
+            <span style="color:lightsalmon;font-weight:bold;">Osaühingu nimi:</span> {{andmed[0].iloc[0]['Osaühingu nimi']}}
         </div>
         <div class="row">
-            <span style="color:pink;font-weight:bold;">Osaühingu registrikood:</span> {{andmed.iloc[0]['Registrikood']}}
+            <span style="color:pink;font-weight:bold;">Osaühingu registrikood:</span> {{andmed[0].iloc[0]['Registrikood']}}
         </div>
         <div class="row">
-            <span style="color:lightseagreen;font-weight:bold;">Osaühingu asutamise kuupäev:</span> {{andmed.iloc[0]['Asutamise kuupäev']}}
+            <span style="color:lightseagreen;font-weight:bold;">Osaühingu asutamise kuupäev:</span> {{andmed[0].iloc[0]['Asutamise kuupäev']}}
         </div>
         <img src="https://api.dicebear.com/5.x/pixel-art/svg?seed={{ [1,n,100]|random() }}&size=96" alt="avatar"/>
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for column in andmed[1].columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in andmed[1].values %}
+                <tr>
+                    {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
