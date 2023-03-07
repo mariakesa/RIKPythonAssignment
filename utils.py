@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from databases import Session,engine
-from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud
+from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud, many_to_many_table_fuusilised_isikud
 import pandas as pd
 
 def init_db():
@@ -75,13 +75,18 @@ def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
 
 def pari_osauhingu_tabelid(osauhingu_nimi):
     with Session() as session:
-        paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev).filter_by(osauhingu_nimi=osauhingu_nimi).first()
+        paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev, Osauhingud.kapital).filter_by(osauhingu_nimi=osauhingu_nimi).first()
         print(paring)
-        paringu_tagastus=pd.DataFrame([[paring[0], paring[1], paring[2]]], columns=['Osaühingu nimi', 'Registrikood', 'Asutamise kuupäev'])
-        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, FuusilisestIsikustOsanikud.isikukood).\
-                join(Osauhingud.fuusilised_osanikud).\
-                filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        fuusilised_osanikud_paringu_tagastus=pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        paringu_tagastus=pd.DataFrame([[paring[0], paring[1], paring[2], paring[3]]], columns=['Osaühingu nimi', 'Registrikood', 'Asutamise kuupäev', 'Kapital'])
+        #fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, FuusilisestIsikustOsanikud.isikukood).\
+                #join(Osauhingud.fuusilised_osanikud).\
+                #filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
+        #fuusilised_osanikud_paringu_tagastus=pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        fuusilised_osanikud_paring = session.query(FuusilisestIsikustOsanikud.nimi, Osauhingud.osauhingu_nimi, many_to_many_table_fuusilised_isikud.c.osakapital, many_to_many_table_fuusilised_isikud.c.is_asutaja)\
+                .join(many_to_many_table_fuusilised_isikud, FuusilisestIsikustOsanikud.index == many_to_many_table_fuusilised_isikud.c.right_id_osanikud)\
+                .join(Osauhingud, Osauhingud.index == many_to_many_table_fuusilised_isikud.c.left_id_osauhingud)\
+                .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
+        fuusilised_osanikud_paringu_tagastus = pd.DataFrame(fuusilised_osanikud_paring, columns=['Füüsilisest isikust osaniku nimi','Isikukood','Osakapital','Asutaja'])
         print(fuusilised_osanikud_paringu_tagastus)
         juriidilised_osanikud_paring = session.query(JuriidilisestIsikustOsanikud.nimi, JuriidilisestIsikustOsanikud.registrikood).\
                 join(Osauhingud.juriidilised_osanikud).\

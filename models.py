@@ -32,7 +32,7 @@ class Osauhingud(Base):
     osauhingu_nimi = Column(String(100), nullable=False)
     registri_kood = Column(Integer, nullable=False)
     asutamise_kuupaev = Column(Date)
-    osakapital = Column(Integer, nullable=False)
+    kapital = Column(Integer, nullable=False)
 
     fuusilised_osanikud = relationship(
         "FuusilisestIsikustOsanikud",
