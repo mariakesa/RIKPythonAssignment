@@ -99,6 +99,20 @@ def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
         session.add(row)
         session.commit()
 
+def parse_multidict(osauhingu_asutamise_dct):
+    assotsiatsiooni_tabeli_data = []
+    for key, value in data.items():
+        if 'kapital' in key:
+            assotsiatsiooni_tabeli_data['osakapital'] = value
+        if 'index' in key:
+            assotsiatsiooni_tabeli_data['right_id_osanikud'] = value
+        assotsiatsiooni_tabeli_data['is_asutaja'] = 'On'
+    return assotsiatsiooni_tabeli_data
+
+
+def calculate_total_capital():
+    return 0
+
 def pari_osauhingu_tabelid(osauhingu_nimi):
     with Session() as session:
         paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev, Osauhingud.kapital).filter_by(osauhingu_nimi=osauhingu_nimi).first()
