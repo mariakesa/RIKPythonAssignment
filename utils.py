@@ -78,19 +78,21 @@ def fuus_isikud_asutamine_ik_paring(isikukood):
     with Session() as session:
         paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.isikukood==isikukood).all()
         paringu_tagastus=pd.DataFrame(paring, columns=['id','Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        paringu_tagastus = paringu_tagastus.to_dict(orient='list')
     return paringu_tagastus
 
 def juur_isikud_asutamine_nimi_paring(marksona):
     with Session() as session:
-        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Isikukood'])
+        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.registrikood).filter(JuriidilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Registrikood'])
+        paringu_tagastus = paringu_tagastus.to_dict(orient='list')
     return paringu_tagastus
 
 def juur_isikud_asutamine_rk_paring(registrikood):
     with Session() as session:
-        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Isikukood'])
-        print('BOOM',paringu_tagastus)
+        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.registrikood).filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Registrikood'])
+        paringu_tagastus = paringu_tagastus.to_dict(orient='list')
     return paringu_tagastus    
 
 def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
@@ -101,7 +103,7 @@ def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
 
 def parse_multidict(osauhingu_asutamise_dct):
     assotsiatsiooni_tabeli_data = []
-    for key, value in data.items():
+    for key, value in osauhingu_asutamise_dct.items():
         if 'kapital' in key:
             assotsiatsiooni_tabeli_data['osakapital'] = value
         if 'index' in key:

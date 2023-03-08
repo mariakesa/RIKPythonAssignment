@@ -46,9 +46,15 @@ def osauhingu_andmed(osauhingu_nimi):
 @app.route('/osaniku_otsing', methods=['POST'])
 def osaniku_otsing():
     args = request.json
-    if 'nimi' in args:
-        fuus_paringu_tagastus = fuus_isikud_asutamine_nimi_paring(args['nimi'])
-        return fuus_paringu_tagastus
+    mapping = {
+        'nimi': fuus_isikud_asutamine_nimi_paring,
+        'isikukood': fuus_isikud_asutamine_ik_paring,
+        'registrikood': juur_isikud_asutamine_rk_paring,
+        'jur_nimi': juur_isikud_asutamine_nimi_paring,
+    }
+    for parameeter, funktsioon in mapping.items():
+        if parameeter in args:
+            return funktsioon(args[parameeter])
     return "bad request", 400
 
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])

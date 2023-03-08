@@ -30,20 +30,14 @@
         </div>
     </form>
     <div> Lisa osanikud </div>
-    <form action="/osauhingu_asutamine" method="post">
-        {{otsing_dct['fuus_isikud_nimeline_otsing'].csrf_token}}
-        {{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona.label}}
-        <!--{{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona}}
-        <!--{{otsing_dct['fuus_isikud_nimeline_otsing'].otsi}}-->
-    </form>
-    <input id="fuus_is_marksona" name="fuus_is_marksona" required type="text" value=""/>
-    <button onclick="otsiOsanikuNime(document.getElementById('fuus_is_marksona').value)">Click me</button>
-    <form action="/osauhingu_asutamine" method="post">
-        {{otsing_dct['fuus_isikud_ik_otsing'].csrf_token}}
-        {{otsing_dct['fuus_isikud_ik_otsing'].isikukood.label}}
-        {{otsing_dct['fuus_isikud_ik_otsing'].isikukood}}
-        {{otsing_dct['fuus_isikud_ik_otsing'].otsi}}
-    </form>
+    <input id="fuus_is_marksona" required type="text" value=""/>
+    <button onclick="otsiOsanikku({nimi: document.getElementById('fuus_is_marksona').value})">Otsi</button>
+    <input id="fuus_is_ik" required type="text" value=""/>
+    <button onclick="otsiOsanikku({isikukood: document.getElementById('fuus_is_ik').value})">Otsi</button>
+    <input id="juur_is_marksona" required type="text" value=""/>
+    <button onclick="otsiOsanikku({jur_nimi: document.getElementById('juur_is_marksona').value})">Otsi</button>
+    <input id="juur_is_rk" name="fuus_is_marksona" required type="text" value=""/>
+    <button onclick="otsiOsanikku({registrikood: document.getElementById('juur_is_rk').value})">Otsi</button>
     <!--
     <form action="/" method="post">
         {{otsing_dct['juur_isikud_nimeline_otsing'].csrf_token}}
@@ -141,10 +135,8 @@
 
     }
 
-    function otsiOsanikuNime(nimi) {
-        const params = {
-            nimi: nimi
-        };
+    function otsiOsanikku(params) {
+
         const options = {
             method: 'POST',
             headers: {
@@ -156,17 +148,27 @@
         fetch( 'osaniku_otsing', options )
             .then( response => response.json() )
             .then( response => {
-                console.log(response);
+                
                 let datatable = response["id"].map(function(id, i) {
-                    return [id,response["Füüsilisest isikust osaniku nimi"][i],response['Isikukood'][i]];
+                    if ("Füüsilisest isikust osaniku nimi" in response) {
+                        return [id,response["Füüsilisest isikust osaniku nimi"][i],response['Isikukood'][i],"fuus"];
+                    } else if ("Juriidilisest isikust osaniku nimi" in response) {
+                        return [id,response["Juriidilisest isikust osaniku nimi"][i],response['Registrikood'][i],"jur"];
+                    } else {
+                        return [];
+                    }
                 });
+                let kooditulp = datatable.length > 0 && datatable[0][3] === "fuus" ? "Isikukood" : "Registrikood"; 
                 $('#fuus-otsingu-tabel').DataTable({
                     data: datatable,
                     searching: false,
                     destroy: true,
                     columns: [
                     { title: "Nimi", data: 1 },
-                    { title: "Isikukood", data: 2 }
+                    { title: kooditulp, data: 2 },
+                    { title: "Lisa asutaja", render: function(data, type, row) {
+                        return "<button onclick=\"addOsanikToForm(" + row[0] + ",'" + row[1] +"')\">Lisa asutaja</button>";
+                    }}
                     ]
                 });
             } );
