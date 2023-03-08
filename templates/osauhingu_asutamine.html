@@ -3,7 +3,7 @@
 {% block main %}
 <div class="container">
     <h2>Osaühingu asutamine</h2>
-    <form action="/osauhingu_asutamine" method="POST">
+    <form action="/{{ url_for('osauhingu_asutamine') }}" method="POST">
         {{osauhingu_asutamise_vorm.csrf_token}}
         <div class="container">
             <div class="form-group">
@@ -18,15 +18,88 @@
                 {{osauhingu_asutamise_vorm.asutamise_kuupaev.label}}
                 {{osauhingu_asutamise_vorm.asutamise_kuupaev}}
             </div>
-            <button type="button" id="lisa-fuus-button" onclick="addFuusAsutajaBox()">+</button>
-            <button id="eemalda-fuus-button">-</button>
-            <div id="fuus-asutajad">  
-            </div>
-            <div class="form-group">
-                {{osauhingu_asutamise_vorm.asuta}}
-            </div>
         </div>
     </form>
+    <div> Lisa osanikud </div>
+    <form action="/osauhingu_asutamine" method="post">
+        {{otsing_dct['fuus_isikud_nimeline_otsing'].csrf_token}}
+        {{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona.label}}
+        {{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona}}
+        {{otsing_dct['fuus_isikud_nimeline_otsing'].otsi}}
+    </form>
+    <form action="/osauhingu_asutamine" method="post">
+        {{otsing_dct['fuus_isikud_ik_otsing'].csrf_token}}
+        {{otsing_dct['fuus_isikud_ik_otsing'].isikukood.label}}
+        {{otsing_dct['fuus_isikud_ik_otsing'].isikukood}}
+        {{otsing_dct['fuus_isikud_ik_otsing'].otsi}}
+    </form>
+    <!--
+    <form action="/" method="post">
+        {{otsing_dct['juur_isikud_nimeline_otsing'].csrf_token}}
+        {{otsing_dct['juur_isikud_nimeline_otsing'].juur_is_marksona.label}}
+        {{otsing_dct['juur_isikud_nimeline_otsing'].juur_is_marksona}}
+        {{otsing_dct['juur_isikud_nimeline_otsing'].otsi}}
+    </form>
+    <form action="/" method="post">
+        {{otsing_dct['juur_isikud_rk_otsing'].csrf_token}}
+        {{otsing_dct['juur_isikud_rk_otsing'].juur_is_registrikood.label}}
+        {{otsing_dct['juur_isikud_rk_otsing'].juur_is_registrikood}}
+        {{otsing_dct['juur_isikud_rk_otsing'].otsi}}
+    </form>
+-->
+    <div id="lisatud-fuus-osanikud"></div>
+    <div id="fuus-otsingu-tulemused">
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for column in fuus_paringu_tagastus.columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in fuus_paringu_tagastus.values %}
+                <tr>
+                    {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                    <td><button>Click me</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="lisatud-juur-osanikud"></div>
+    <div id="juur-otsingu-tulemused">
+        <table class="table">
+            <thead>
+                <tr>
+                    {% for column in juur_paringu_tagastus.columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in juur_paringu_tagastus.values %}
+                <tr>
+                    {% for value in row %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                    <td><button>Click me</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!--
+    <button type="button" id="lisa-fuus-button" onclick="addFuusAsutajaBox()">+</button>
+    <button id="eemalda-fuus-button">-</button>
+    <div id="fuus-asutajad">  
+    </div>
+    <div class="form-group">
+        {{osauhingu_asutamise_vorm.asuta}}
+    </div>-->
+</div>
 </div>
 <div class="container" id="edu_sonum">
     {% if edu_sonum != None%}
@@ -34,6 +107,7 @@
     {% endif %}
 </div>
 
+<!--
 <script>
 
 function wrapFormGroup(elem) {
@@ -76,4 +150,5 @@ function wrapFormGroup(elem) {
 
     addFuusAsutajaBox();
 </script>
+-->
 {%endblock%}
