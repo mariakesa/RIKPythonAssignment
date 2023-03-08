@@ -63,7 +63,6 @@ def juur_isikud_rk_paring(registrikood):
             join(Osauhingud.juriidilised_osanikud).\
             filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
         paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
-        print(paringu_tagastus)
     return paringu_tagastus
 
 def fuus_isikud_asutamine_nimi_paring(marksona):
@@ -100,6 +99,16 @@ def lisa_osauhing_andmebaasi(osauhingu_asutamise_dct):
         session.add(row)
         session.commit()
 
+def lisa_asutajad_andmebaasi(asutajad):
+    with Session() as session:
+        if 'fuus' in asutajad.keys():
+            fuus=pd.DataFrame(asutajad['fuus'])
+            fuus.to_sql('many_to_many_table_fuusilised_isikud',con=engine)
+        if 'jur' in asutajad.keys():
+            jur=pd.DataFrame(asutajad['jur'])
+            jur.to_sql('many_to_many_table_juriidilised_isikud', con=engine)
+        session.commit()
+
 def parse_multidict(osauhingu_asutamise_dct):
     assotsiatsiooni_tabeli_data = []
     for key, value in osauhingu_asutamise_dct.items():
@@ -110,9 +119,6 @@ def parse_multidict(osauhingu_asutamise_dct):
         assotsiatsiooni_tabeli_data['is_asutaja'] = 'On'
     return assotsiatsiooni_tabeli_data
 
-
-def calculate_total_capital():
-    return 0
 
 def pari_osauhingu_tabelid(osauhingu_nimi):
     with Session() as session:

@@ -102,14 +102,9 @@ def osauhingu_asutamine():
 def lisa_uus_osauhing_andmebaasi():
     if request.method == 'POST':
         print(request.form.keys())
-        osauhingu_asutamise_dct=request.form
-        #osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
-        #osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
-        #osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
-        #osauhingu_asutamise_dct['fuus_is_asutajad']=request.form['fuus_is_asutajad']
-        print('Shalala', osauhingu_asutamise_dct)
+        print('Shalala', request.form)
         kapital = 0
-        for key, value in osauhingu_asutamise_dct.items():
+        for key, value in request.form.items():
             if key.endswith("kapital"):
                 try:
                     summa = int(value)
@@ -121,5 +116,24 @@ def lisa_uus_osauhing_andmebaasi():
         if kapital < 2500:
             return "Vigane kogukapital: summa alla miinimumnõude", 400
         print("Kapital", kapital)
+        osauhingu_asutamise_dct = {}
+        osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
+        osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
+        osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
+        osauhingu_asutamise_dct['kapital']=kapital
+        asutajad = {}
+        for key, value in request.form.items():
+            keys = key.split('-')
+            if len(keys) != 3:
+                continue
+            if keys[0] not in ('fuus', 'jur'):
+                continue
+            if keys[0] not in asutajad:
+                asutajad[keys[0]] = {}
+            if keys[1] not in asutajad[keys[0]]:
+                asutajad[keys[0]][keys[1]] = {}
+            asutajad[keys[0]][keys[1]][keys[2]] = value
+        print(asutajad)
+        lisa_osauhing_andmebaasi(osauhingu_asutamise_dct, asutajad)
     return redirect('/')
     
