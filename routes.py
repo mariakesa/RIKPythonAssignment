@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, request
 from forms import *
 from utils import *
 import pandas as pd
@@ -55,7 +55,7 @@ def osauhingu_asutamine():
     otsing_dct['fuus_isikud_ik_otsing'] = fuus_isikud_ik_otsing
     otsing_dct['juur_isikud_nimeline_otsing'] = juur_isikud_nimeline_otsing
     otsing_dct['juur_isikud_rk_otsing'] = juur_isikud_rk_otsing
-    fuus_paringu_tagastus=pd.DataFrame()
+    fuus_paringu_tagastus={'columns':[],'data':[]}
     juur_paringu_tagastus=pd.DataFrame()
     if fuus_isikud_nimeline_otsing.validate_on_submit():
         fuus_paringu_tagastus = fuus_isikud_asutamine_nimi_paring(fuus_isikud_nimeline_otsing.fuus_is_marksona.data)
@@ -65,25 +65,32 @@ def osauhingu_asutamine():
         juur_paringu_tagastus = juur_isikud_asutamine_nimi_paring(juur_isikud_nimeline_otsing.juur_is_marksona.data)
     if juur_isikud_rk_otsing.validate_on_submit():
         juur_paringu_tagastus = juur_isikud_asutamine_rk_paring(juur_isikud_rk_otsing.juur_is_registrikood.data)
-    if osauhingu_asutamise_vorm.validate_on_submit():
-        print('boom',osauhingu_asutamise_vorm.fuus_is_asutajad.data)
-        osauhingu_asutamise_dct={}
-        osauhingu_asutamise_dct['osauhingu_nimi']=osauhingu_asutamise_vorm.osauhingu_nimi.data
-        osauhingu_asutamise_dct['registri_kood']=osauhingu_asutamise_vorm.registrikood.data
-        osauhingu_asutamise_dct['asutamise_kuupaev']=osauhingu_asutamise_vorm.asutamise_kuupaev.data
-        osauhingu_asutamise_dct['is_asutaja']='On'
-        osauhingu_asutamise_vorm.osauhingu_nimi.data=None
-        osauhingu_asutamise_vorm.registrikood.data=None
-        osauhingu_asutamise_vorm.asutamise_kuupaev.data=None
+    #if osauhingu_asutamise_vorm.validate_on_submit():
+        #osauhingu_nimi=osauhingu_asutamise_vorm.osauhingu_nimi.data
+        #print('boom',osauhingu_asutamise_vorm.fuus_is_asutajad.data)
+        #osauhingu_asutamise_dct={}
+        #osauhingu_asutamise_dct['osauhingu_nimi']=osauhingu_nimi
+        #osauhingu_asutamise_dct['registri_kood']=osauhingu_asutamise_vorm.registrikood.data
+        #osauhingu_asutamise_dct['asutamise_kuupaev']=osauhingu_asutamise_vorm.asutamise_kuupaev.data
+        #osauhingu_asutamise_dct['is_asutaja']='On'
+        #osauhingu_asutamise_vorm.osauhingu_nimi.data=None
+        #osauhingu_asutamise_vorm.registrikood.data=None
+        #osauhingu_asutamise_vorm.asutamise_kuupaev.data=None
         #lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct)
-        edu='Osaühing on edukalt loodud.'
-        return redirect(url_for('/osauhingu_asutamine/'+osauhingu_asutamise_dct['osauhingu_nimi']), osauhingu_asutamise_dct=osauhingu_asutamise_dct)
+        #redirect_url = request.form.get('redirect_url').replace('osauhingu_nimi_placeholder', osauhingu_nimi)
+        #return redirect(redirect_url)
     else:
         edu='Andmed ei ole andmebaasi salvestatud.'
     return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm, edu_sonum=edu, 
                            otsing_dct=otsing_dct,fuus_paringu_tagastus=fuus_paringu_tagastus, juur_paringu_tagastus=juur_paringu_tagastus)
 
-@app.route('/osauhingu_asutamine/<osauhingu_nimi>', methods=['POST'])
-def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
-    return redirect('/osauhingud/'+osauhingu_asutamise_dct['osauhingu_nimi'])
+@app.route('/osauhingu_asutamine/entry', methods=['POST'])
+def lisa_uus_osauhing_andmebaasi():
+    if request.method == 'POST':
+        osauhingu_asutamise_dct={}
+        osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
+        osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
+        osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
+        print('Shalala', osauhingu_asutamise_dct)
+    return redirect('/')
     

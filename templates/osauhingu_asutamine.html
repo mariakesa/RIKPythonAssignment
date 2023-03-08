@@ -3,7 +3,7 @@
 {% block main %}
 <div class="container">
     <h2>Osaühingu asutamine</h2>
-    <form action="/{{ url_for('osauhingu_asutamine') }}" method="POST">
+    <form action="/osauhingu_asutamine/entry" method="POST" id="form">
         {{osauhingu_asutamise_vorm.csrf_token}}
         <div class="container">
             <div class="form-group">
@@ -18,6 +18,15 @@
                 {{osauhingu_asutamise_vorm.asutamise_kuupaev.label}}
                 {{osauhingu_asutamise_vorm.asutamise_kuupaev}}
             </div>
+        </div>
+        <div id="fuus-asutajad">
+            <h5>Füüsilisest isikust asutajad</h5>
+        </div>
+        <div id="juur-asutajad">
+            <h5>Juriidilisest isikust asutajad</h5>
+        </div>
+        <div class="form-group">
+            {{osauhingu_asutamise_vorm.asuta}}
         </div>
     </form>
     <div> Lisa osanikud </div>
@@ -52,22 +61,21 @@
         <table class="table">
             <thead>
                 <tr>
-                    {% for column in fuus_paringu_tagastus.columns %}
-                    <th>{{ column }}</th>
+                    {% for column in fuus_paringu_tagastus.keys() %}
+                    <th>{{ column}}</th>
                     {% endfor %}
                 </tr>
             </thead>
             <tbody>
-                {% for row in fuus_paringu_tagastus.values %}
+                {% for i in range(fuus_paringu_tagastus['id']|length) %}
                 <tr>
-                    {% for value in row %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                    <td><button>Click me</button></td>
+                    <td>{{ fuus_paringu_tagastus['id'][i] }}</td>
+                    <td>{{ fuus_paringu_tagastus['Füüsilisest isikust osaniku nimi'][i] }}</td>
+                    <td>{{ fuus_paringu_tagastus['Isikukood'][i] }}</td>
+                   <td><button onclick="addOsanikToForm({{ fuus_paringu_tagastus['id'][i] }}, '{{ fuus_paringu_tagastus['Füüsilisest isikust osaniku nimi'][i] }}')">Click me</button></td> 
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
     </div>
     <div id="lisatud-juur-osanikud"></div>
     <div id="juur-otsingu-tulemused">
@@ -107,6 +115,37 @@
     {% endif %}
 </div>
 
+<script>
+    function wrapFormGroup(elem) {
+        var formGroup = document.createElement("div");
+        formGroup.className = "form-group";
+        formGroup.appendChild(elem);
+        return formGroup;
+    }
+
+    function addOsanikToForm(a,b) {
+        console.log(a,b)
+
+        //var osanik = JSON.parse(jsonStr);
+
+        var numFuusAsutaja = document.querySelectorAll(".fuus-asutaja").length;
+
+        //create a new box
+        var box = document.createElement("div");
+        box.className = "fuus-asutaja";
+
+        var nimi = document.createElement("div");
+        nimi.innerText=b
+        box.appendChild(nimi);
+
+        var container = document.querySelector("#lisatud-fuus-osanikud");
+
+        container.appendChild(box);
+
+        console.log(nimi.innerText)
+
+    }
+</script>
 <!--
 <script>
 

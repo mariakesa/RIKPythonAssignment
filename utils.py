@@ -68,26 +68,29 @@ def juur_isikud_rk_paring(registrikood):
 
 def fuus_isikud_asutamine_nimi_paring(marksona):
     with Session() as session:
-        paring = session.query(FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        paringu_tagastus = paringu_tagastus.to_dict(orient='list')
+        print('boom',paringu_tagastus)
     return paringu_tagastus
         
 def fuus_isikud_asutamine_ik_paring(isikukood):
     with Session() as session:
-        paring = session.query(FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.isikukood==isikukood).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['Füüsilisest isikust osaniku nimi', 'Isikukood'])
+        paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.isikukood==isikukood).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Füüsilisest isikust osaniku nimi', 'Isikukood'])
     return paringu_tagastus
 
 def juur_isikud_asutamine_nimi_paring(marksona):
     with Session() as session:
-        paring = session.query(JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['Juriidilisest isikust osaniku nimi', 'Isikukood'])
+        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Isikukood'])
     return paringu_tagastus
 
 def juur_isikud_asutamine_rk_paring(registrikood):
     with Session() as session:
-        paring = session.query(JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
-        paringu_tagastus=pd.DataFrame(paring, columns=['Juriidilisest isikust osaniku nimi', 'Isikukood'])
+        paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.isikukood).filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
+        paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Isikukood'])
+        print('BOOM',paringu_tagastus)
     return paringu_tagastus    
 
 def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
