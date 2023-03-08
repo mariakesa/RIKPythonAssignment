@@ -30,28 +30,30 @@
         </div>
     </form>
     <div> Lisa osanikud </div>
-    <input id="fuus_is_marksona" required type="text" value=""/>
-    <button onclick="otsiOsanikku({nimi: document.getElementById('fuus_is_marksona').value})">Otsi</button>
-    <input id="fuus_is_ik" required type="text" value=""/>
-    <button onclick="otsiOsanikku({isikukood: document.getElementById('fuus_is_ik').value})">Otsi</button>
-    <input id="juur_is_marksona" required type="text" value=""/>
-    <button onclick="otsiOsanikku({jur_nimi: document.getElementById('juur_is_marksona').value})">Otsi</button>
-    <input id="juur_is_rk" name="fuus_is_marksona" required type="text" value=""/>
-    <button onclick="otsiOsanikku({registrikood: document.getElementById('juur_is_rk').value})">Otsi</button>
-    <!--
-    <form action="/" method="post">
-        {{otsing_dct['juur_isikud_nimeline_otsing'].csrf_token}}
-        {{otsing_dct['juur_isikud_nimeline_otsing'].juur_is_marksona.label}}
-        {{otsing_dct['juur_isikud_nimeline_otsing'].juur_is_marksona}}
-        {{otsing_dct['juur_isikud_nimeline_otsing'].otsi}}
-    </form>
-    <form action="/" method="post">
-        {{otsing_dct['juur_isikud_rk_otsing'].csrf_token}}
-        {{otsing_dct['juur_isikud_rk_otsing'].juur_is_registrikood.label}}
-        {{otsing_dct['juur_isikud_rk_otsing'].juur_is_registrikood}}
-        {{otsing_dct['juur_isikud_rk_otsing'].otsi}}
-    </form>
--->
+    <div>
+        <label for="explicit-label-name">Füüsilise isiku nimi: </label>
+        <input id="fuus_is_marksona" required type="text" value=""/>
+        <button onclick="otsiOsanikku({nimi: document.getElementById('fuus_is_marksona').value})">Otsi</button>
+    </div>
+    
+    <div>
+        <label for="explicit-label-name">Isikukood: </label>
+        <input id="fuus_is_ik" required type="text" value=""/>
+        <button onclick="otsiOsanikku({isikukood: document.getElementById('fuus_is_ik').value})">Otsi</button>   
+    </div>
+    
+    <div>
+        <label for="explicit-label-name">Juriidilise isiku nimi: </label>
+        <input id="juur_is_marksona" required type="text" value=""/>
+        <button onclick="otsiOsanikku({jur_nimi: document.getElementById('juur_is_marksona').value})">Otsi</button>
+    </div>
+
+    <div>
+        <label for="explicit-label-name">Registrikood: </label>
+        <input id="juur_is_rk" name="fuus_is_marksona" required type="text" value=""/>
+        <button onclick="otsiOsanikku({registrikood: document.getElementById('juur_is_rk').value})">Otsi</button>
+    </div>
+
     <div id="fuus-otsingu-tulemused">
         <table id="fuus-otsingu-tabel" class="table"></table>
     </div>
