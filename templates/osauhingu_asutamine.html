@@ -74,10 +74,15 @@
 
     function addOsanikToForm(asutajaID,asutajaNimi,fuusJur) {
 
+        let id = fuusJur + "-" + asutajaID;
+        if (document.getElementById(id) != null) {
+            return;
+        }
         var numAsutaja = document.getElementsByClassName(fuusJur + "-asutaja").length;
 
         var box = document.createElement("div");
         box.className = fuusJur + "-asutaja";
+        box.id = id;
 
         var nimi = document.createElement("div");
         nimi.innerText=asutajaNimi;
