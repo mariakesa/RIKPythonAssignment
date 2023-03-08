@@ -108,5 +108,18 @@ def lisa_uus_osauhing_andmebaasi():
         #osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
         #osauhingu_asutamise_dct['fuus_is_asutajad']=request.form['fuus_is_asutajad']
         print('Shalala', osauhingu_asutamise_dct)
+        kapital = 0
+        for key, value in osauhingu_asutamise_dct.items():
+            if key.endswith("kapital"):
+                try:
+                    summa = int(value)
+                except ValueError:
+                    return "Vigane osakapital: ei ole täisarv", 400
+                if summa <= 0:
+                    return "Vigane osakapital: negatiivne arv", 400
+                kapital += summa
+        if kapital < 2500:
+            return "Vigane kogukapital: summa alla miinimumnõude", 400
+        print("Kapital", kapital)
     return redirect('/')
     

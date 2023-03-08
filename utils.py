@@ -71,7 +71,6 @@ def fuus_isikud_asutamine_nimi_paring(marksona):
         paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
         paringu_tagastus=pd.DataFrame(paring, columns=['id','Füüsilisest isikust osaniku nimi', 'Isikukood'])
         paringu_tagastus = paringu_tagastus.to_dict(orient='list')
-        print('boom',paringu_tagastus)
     return paringu_tagastus
         
 def fuus_isikud_asutamine_ik_paring(isikukood):
@@ -95,7 +94,7 @@ def juur_isikud_asutamine_rk_paring(registrikood):
         paringu_tagastus = paringu_tagastus.to_dict(orient='list')
     return paringu_tagastus    
 
-def lisa_uus_osauhing_andmebaasi(osauhingu_asutamise_dct):
+def lisa_osauhing_andmebaasi(osauhingu_asutamise_dct):
     with Session() as session:
         row = Osauhingud(**osauhingu_asutamise_dct)
         session.add(row)
