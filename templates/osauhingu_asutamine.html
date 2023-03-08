@@ -20,10 +20,10 @@
             </div>
         </div>
         <div id="lisatud-fuus-asutajad">
-            <h5>Füüsilisest isikust asutajad</h5>
+            <h6>Füüsilisest isikust asutajad</h6>
         </div>
         <div id="lisatud-juur-asutajad">
-            <h5>Juriidilisest isikust asutajad</h5>
+            <h6>Juriidilisest isikust asutajad</h6>
         </div>
         <div class="form-group">
             {{osauhingu_asutamise_vorm.asuta}}
@@ -121,8 +121,7 @@
         return formGroup;
     }
 
-    function addOsanikToForm(a,b) {
-        console.log(a,b)
+    function addOsanikToForm(asutajaID,asutajaNimi) {
 
         //var osanik = JSON.parse(jsonStr);
 
@@ -133,7 +132,7 @@
         box.className = "fuus-asutaja";
 
         var nimi = document.createElement("div");
-        nimi.innerText=b
+        nimi.innerText=asutajaNimi;
         box.appendChild(nimi);
 
         var container = document.querySelector("#lisatud-fuus-asutajad");
@@ -144,11 +143,16 @@
 
         var input = document.createElement("input");
         input.type = "int";
-        input.name = "fuus_is_asutajad-" + numFuusAsutaja+'fuus_is_asutaja_kapital';
+        input.name = "fuus_is_asutajad-" + numFuusAsutaja+'-fuus_is_asutaja_kapital';
         input.value=100
         box.appendChild(wrapFormGroup(input));
 
-        
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "fuus_is_asutajad-" + numFuusAsutaja+'-fuus_is_asutaja_index';
+        input.value =   asutajaID;
+        box.appendChild(wrapFormGroup(input));
+
 
     }
 </script>

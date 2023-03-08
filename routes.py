@@ -87,10 +87,12 @@ def osauhingu_asutamine():
 @app.route('/osauhingu_asutamine/entry', methods=['POST'])
 def lisa_uus_osauhing_andmebaasi():
     if request.method == 'POST':
-        osauhingu_asutamise_dct={}
-        osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
-        osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
-        osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
+        print(request.form.keys())
+        osauhingu_asutamise_dct=request.form
+        #osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
+        #osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
+        #osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
+        #osauhingu_asutamise_dct['fuus_is_asutajad']=request.form['fuus_is_asutajad']
         print('Shalala', osauhingu_asutamise_dct)
     return redirect('/')
     
