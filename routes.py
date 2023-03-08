@@ -126,14 +126,21 @@ def lisa_uus_osauhing_andmebaasi():
             keys = key.split('-')
             if len(keys) != 3:
                 continue
-            if keys[0] not in ('fuus', 'jur'):
+            fuusJur, id, index_kapital = keys
+            if fuusJur not in ('fuus', 'jur'):
                 continue
-            if keys[0] not in asutajad:
-                asutajad[keys[0]] = {}
-            if keys[1] not in asutajad[keys[0]]:
-                asutajad[keys[0]][keys[1]] = {}
-            asutajad[keys[0]][keys[1]][keys[2]] = value
+            if fuusJur not in asutajad:
+                asutajad[fuusJur] = {}
+            if id not in asutajad[fuusJur]:
+                asutajad[fuusJur][id] = {}
+            asutajad[fuusJur][id][index_kapital] = int(value) #valideeritud eelpool
+            asutajad[fuusJur][id]['is_asutaja'] = 'On'
         print(asutajad)
-        lisa_osauhing_andmebaasi(osauhingu_asutamise_dct, asutajad)
+        tabel = {}
+        for fj, dct in asutajad.items():
+            tabel[fj] = [row for _, row in dct.items()]
+        print(tabel)
+        #lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
+        #lisa_asutajad_andmebaasi(tabel)
     return redirect('/')
     

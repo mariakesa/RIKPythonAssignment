@@ -65,6 +65,17 @@ def juur_isikud_rk_paring(registrikood):
         paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
     return paringu_tagastus
 
+def osauhingu_paring_add_db(registrikood):
+    with Session() as session:
+        paring = session.query(Osauhingud.index).\
+            filter(Osauhingud.registrikood==registrikood).all()
+        if len(paring)!=1:
+            print('Registrikood ei ole unikaalne!')
+            return None
+        else:
+            paringu_tagastus=int(paring[0])
+    return paringu_tagastus
+
 def fuus_isikud_asutamine_nimi_paring(marksona):
     with Session() as session:
         paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
