@@ -33,9 +33,11 @@
     <form action="/osauhingu_asutamine" method="post">
         {{otsing_dct['fuus_isikud_nimeline_otsing'].csrf_token}}
         {{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona.label}}
-        {{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona}}
-        {{otsing_dct['fuus_isikud_nimeline_otsing'].otsi}}
+        <!--{{otsing_dct['fuus_isikud_nimeline_otsing'].fuus_is_marksona}}
+        <!--{{otsing_dct['fuus_isikud_nimeline_otsing'].otsi}}-->
     </form>
+    <input id="fuus_is_marksona" name="fuus_is_marksona" required type="text" value=""/>
+    <button onclick="otsiOsanikuNime(document.getElementById('fuus_is_marksona').value)">Click me</button>
     <form action="/osauhingu_asutamine" method="post">
         {{otsing_dct['fuus_isikud_ik_otsing'].csrf_token}}
         {{otsing_dct['fuus_isikud_ik_otsing'].isikukood.label}}
@@ -57,24 +59,7 @@
     </form>
 -->
     <div id="fuus-otsingu-tulemused">
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for column in fuus_paringu_tagastus.keys() %}
-                    <th>{{ column}}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in range(fuus_paringu_tagastus['id']|length) %}
-                <tr>
-                    <td>{{ fuus_paringu_tagastus['id'][i] }}</td>
-                    <td>{{ fuus_paringu_tagastus['Füüsilisest isikust osaniku nimi'][i] }}</td>
-                    <td>{{ fuus_paringu_tagastus['Isikukood'][i] }}</td>
-                   <td><button onclick="addOsanikToForm({{ fuus_paringu_tagastus['id'][i] }}, '{{ fuus_paringu_tagastus['Füüsilisest isikust osaniku nimi'][i] }}')">Click me</button></td> 
-                </tr>
-                {% endfor %}
-            </tbody>
+        <table id="fuus-otsingu-tabel" class="table"></table>
     </div>
     <div id="juur-otsingu-tulemused">
         <table class="table">
@@ -155,6 +140,36 @@
 
 
     }
+
+    function otsiOsanikuNime(nimi) {
+        const params = {
+            nimi: nimi
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify( params )  
+        };
+        fetch( 'osaniku_otsing', options )
+            .then( response => response.json() )
+            .then( response => {
+                console.log(response);
+                let datatable = response["id"].map(function(id, i) {
+                    return [id,response["Füüsilisest isikust osaniku nimi"][i],response['Isikukood'][i]];
+                });
+                $('#fuus-otsingu-tabel').DataTable({
+                    data: datatable,
+                    searching: false,
+                    columns: [
+                    { title: "Nimi", data: 1 },
+                    { title: "Isikukood", data: 2 }
+                    ]
+                });
+            } );
+        }
 </script>
 <!--
 <script>

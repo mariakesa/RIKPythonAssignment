@@ -43,6 +43,14 @@ def osauhingu_andmed(osauhingu_nimi):
     andmed = pari_osauhingu_tabelid(osauhingu_nimi)
     return render_template('osauhingu_andmed.html',osauhingu_nimi=osauhingu_nimi,andmed=andmed)
 
+@app.route('/osaniku_otsing', methods=['POST'])
+def osaniku_otsing():
+    args = request.json
+    if 'nimi' in args:
+        fuus_paringu_tagastus = fuus_isikud_asutamine_nimi_paring(args['nimi'])
+        return fuus_paringu_tagastus
+    return "bad request", 400
+
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])
 def osauhingu_asutamine():
     osauhingu_asutamise_vorm = OsauhinguAsutamiseVorm()
