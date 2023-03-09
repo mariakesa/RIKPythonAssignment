@@ -25,6 +25,10 @@
         <div id="lisatud-jur-asutajad">
             <h6>Juriidilisest isikust asutajad</h6>
         </div>
+        <div id="kapitali-counter-cont">
+            <h6>Kogukapitali kalkulaator (tähelepanu, kogukapital peab olema vähemalt 2500 eurot!)</h6>
+            <div id="kapitali-counter"></div>
+        </div>
         <div class="form-group">
             {{osauhingu_asutamise_vorm.asuta}}
         </div>
@@ -65,6 +69,8 @@
 </div>
 
 <script>
+
+
     function wrapFormGroup(elem) {
         var formGroup = document.createElement("div");
         formGroup.className = "form-group";
@@ -95,7 +101,7 @@
         var input = document.createElement("input");
         input.type = "int";
         input.name = fuusJur + "-" + numAsutaja + "-osakapital";
-        input.value=100
+        input.className = "sum-input";
         box.appendChild(wrapFormGroup(input));
 
         var input = document.createElement("input");
@@ -103,6 +109,22 @@
         input.name = fuusJur + "-" + numAsutaja + "-right_id_osanikud";
         input.value =   asutajaID;
         box.appendChild(wrapFormGroup(input));
+
+        document.addEventListener("input", function(event) {
+        if (event.target && event.target.classList.contains("sum-input")) {
+            calculateSum();
+        }
+    });
+    }
+
+    function calculateSum() {
+        sumDiv=document.getElementById('kapitali-counter')
+        var sum = 0;
+        var inputs = document.getElementsByClassName("sum-input");
+        for (var i = 0; i < inputs.length; i++) {
+            sum += parseInt(inputs[i].value) || 0;
+        }
+        sumDiv.innerText = "Kogukapital: " + sum + ' eurot';
     }
 
     function otsiOsanikku(params) {
@@ -115,6 +137,7 @@
             },
             body: JSON.stringify( params )  
         };
+        //Kood fetchib data 'osaniku_otsing' routest, et kuvada osanike andmeid ja neid lisada
         fetch( 'osaniku_otsing', options )
             .then( response => response.json() )
             .then( response => {
@@ -144,48 +167,4 @@
             } );
         }
 </script>
-<!--
-<script>
-
-function wrapFormGroup(elem) {
-  var formGroup = document.createElement("div");
-  formGroup.className = "form-group";
-  formGroup.appendChild(elem);
-  return formGroup;
-}
-    function addFuusAsutajaBox() {
-    // get the number of existing boxes
-    var numBoxes = document.querySelectorAll(".fuus-asutaja-box").length;
-
-    // create a new box
-    var box = document.createElement("div");
-    box.className = "fuus-asutaja-box";
-
-    var label = document.createElement("label");
-    label.innerHTML = "Asutaja";
-    box.appendChild(wrapFormGroup(label));
-
-    var input = document.createElement("input");
-    input.type = "text";
-    input.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja';
-    box.appendChild(wrapFormGroup(input));
-
-    var label2 = document.createElement("label");
-    label2.innerHTML = "Asutaja isikukood";
-    box.appendChild(warpFormGroup(label2));
-
-    var input2 = document.createElement("input");
-    input2.type = "text";
-    input2.name = "fuus_is_asutajad-" + numBoxes+'-fuus_is_asutaja_ik';
-    box.appendChild(wrapFormGroup(input2));
-
-    // add the new box to the page
-    var parent = document.getElementById("fuus-asutajad");
-    parent.appendChild(box);
-    }
-
-
-    addFuusAsutajaBox();
-</script>
--->
 {%endblock%}
