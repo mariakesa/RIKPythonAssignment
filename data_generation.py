@@ -59,7 +59,7 @@ def genereeri_juriidilised_isikud_tabel(n_jur_isikud=200):
     ja salvestab need json faili.
     '''
     juriidilised_isikud=[]
-    for i in range(1,n_jur_isikud+1):
+    for i in range(0,n_jur_isikud):
         juriidilised_isikud.append(genereeri_juriidiline_isik())
     with open('juriidilised_isikud_test.json', 'w', encoding='utf-8') as f:
         json.dump(juriidilised_isikud,f,ensure_ascii=False)
@@ -70,7 +70,7 @@ def genereeri_fuusilised_isikud_tabel(n_fuus_isikud=200):
     ja salvestab need json faili.
     '''
     fuusilised_isikud=[]
-    for i in range(1,n_fuus_isikud+1):
+    for i in range(0,n_fuus_isikud):
         fuusilised_isikud.append(genereeri_fuusiline_isik())
     with open('fuusilised_isikud_test.json', 'w', encoding='utf-8') as f:
         json.dump(fuusilised_isikud,f,ensure_ascii=False)
@@ -200,5 +200,6 @@ def genereeri_test_data_json():
     #Genereeri many-to-many assotsiatsiooni tabelid.
     assotsiatsiooni_tabel_1_df=genereeri_assotsiatsiooni_tabel()
     assotsiatsiooni_tabel_2_df=genereeri_assotsiatsiooni_tabel(fuusilised_isikud=False)
+    #Genereeri osauhingute tabel, millel on kapitali veerg, mis on korrektselt täidetud
     total_capital_calculation(osauhingud_ilma_kapitalita, assotsiatsiooni_tabel_1_df, assotsiatsiooni_tabel_2_df)
     print('Testandmed on edukalt genereeritud!')
