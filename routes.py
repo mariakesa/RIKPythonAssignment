@@ -101,13 +101,13 @@ def osauhingu_asutamine():
 @app.route('/osauhingu_asutamine/entry', methods=['POST'])
 def lisa_uus_osauhing_andmebaasi():
     if request.method == 'POST':
-        print(request.form.keys())
-        print('Shalala', request.form)
+
+        #Registrikoodi valideerimine
         paring = osauhingu_paring_add_db(int(request.form['registrikood']))
-        print('boom', paring)
         if len(paring)!=0:
             return 'Registrikood juba eksisteerib andmebaasis!', 400
 
+        #Kapitali valideerimine
         kapital = 0
         for key, value in request.form.items():
             if key.endswith("kapital"):
@@ -121,38 +121,21 @@ def lisa_uus_osauhing_andmebaasi():
         if kapital < 2500:
             return "Vigane kogukapital: summa alla miinimumnõude", 400
         print("Kapital", kapital)
+
+        ###Osauhingu andebaasi lisamine
         osauhingu_asutamise_dct = {}
         osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
         osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
         osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
         osauhingu_asutamise_dct['kapital']=kapital
 
-        ###Osauhingu andebaasi lisamine
         lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
+
         ###Osauhingu indeksi parimine
         indeks=osauhingu_paring_add_db(int(osauhingu_asutamise_dct['registri_kood'])).iloc[0]['Index']
-        print('indeks',indeks)
 
-        asutajad = {}
-        for key, value in request.form.items():
-            keys = key.split('-')
-            if len(keys) != 3:
-                continue
-            fuusJur, id, index_kapital = keys
-            if fuusJur not in ('fuus', 'jur'):
-                continue
-            if fuusJur not in asutajad:
-                asutajad[fuusJur] = {}
-            if id not in asutajad[fuusJur]:
-                asutajad[fuusJur][id] = {}
-            asutajad[fuusJur][id][index_kapital] = int(value) #valideeritud eelpool
-            asutajad[fuusJur][id]['is_asutaja'] = 'On'
-            asutajad[fuusJur][id]['left_id_osauhingud']=indeks
-        print(asutajad)
-        tabel = {}
-        for fj, dct in asutajad.items():
-            tabel[fj] = [row for _, row in dct.items()]
-        print(tabel)
+        ###Many-to-many tabelite genereerimine
+        tabel=genereeri_many_to_many_tabelid(request.form.items(),indeks)
         lisa_asutajad_andmebaasi(tabel)
     return redirect('/')
     

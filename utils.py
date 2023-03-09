@@ -4,7 +4,12 @@ from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustO
 import pandas as pd
 from data_generation import genereeri_test_data_json
 
+
+###Andmebaasi initsialiseerimine
 def init_db():
+    '''
+    Kood initsialiseerib andmebaasi ning juhuslike andmetega jsoni failid ja lisab need andmebaasi.
+    '''
     import models
     Base.metadata.create_all(engine)
     genereeri_test_data_json()
@@ -18,7 +23,7 @@ def init_db():
         pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',if_exists='append',index=False,con=engine)
         session.commit()
 
-
+###Avalehel olevate otsingutega assotsieeruvad päringud
 def nimeline_otsing_paring(marksona):
     with Session() as session:
         paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood).filter(Osauhingud.osauhingu_nimi.ilike("%"+marksona+"%")).all()
@@ -68,13 +73,22 @@ def juur_isikud_rk_paring(registrikood):
         paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi', 'Registrikood'])
     return paringu_tagastus
 
+
+###Osaühingute asutamisel vajaminevad päringud
 def osauhingu_paring_add_db(registrikood):
+    '''
+    Osaühingu asutamisel tekib vajadus täita many-to-many tabelid. Selleks on vaja
+    äsja osaühingute tabelisse lisatud osaühingu indeksit. See päring teostab
+    selle ülesande. 
+    '''
     with Session(bind=engine) as session:
         paring = session.query(Osauhingud.index, Osauhingud.registri_kood).\
             filter(Osauhingud.registri_kood==registrikood).all()
     paringu_tagastus=pd.DataFrame(paring, columns=['Index', 'Registrikood'])
     return paringu_tagastus
 
+#Osaühingute asutamisel on vaja otsida füüsilisi ja juriidilisi isikuid. Allolevad päringud teostavad
+#selle ülesande.
 def fuus_isikud_asutamine_nimi_paring(marksona):
     with Session() as session:
         paring = session.query(FuusilisestIsikustOsanikud.index,FuusilisestIsikustOsanikud.nimi,FuusilisestIsikustOsanikud.isikukood).filter(FuusilisestIsikustOsanikud.nimi.ilike("%"+marksona+"%")).all()
@@ -101,8 +115,9 @@ def juur_isikud_asutamine_rk_paring(registrikood):
         paring = session.query(JuriidilisestIsikustOsanikud.index, JuriidilisestIsikustOsanikud.nimi,JuriidilisestIsikustOsanikud.registrikood).filter(JuriidilisestIsikustOsanikud.registrikood==registrikood).all()
         paringu_tagastus=pd.DataFrame(paring, columns=['id','Juriidilisest isikust osaniku nimi', 'Registrikood'])
         paringu_tagastus = paringu_tagastus.to_dict(orient='list')
-    return paringu_tagastus    
-
+    return paringu_tagastus   
+ 
+###Uute andmete andmebaasi lisamine
 def lisa_osauhing_andmebaasi(osauhingu_asutamise_dct):
     with Session() as session:
         row = Osauhingud(**osauhingu_asutamise_dct)
@@ -119,17 +134,33 @@ def lisa_asutajad_andmebaasi(asutajad):
             jur.to_sql('many_to_many_table_juriidilised_isikud', index=False,if_exists='append',con=engine)
         session.commit()
 
-def parse_multidict(osauhingu_asutamise_dct):
-    assotsiatsiooni_tabeli_data = []
-    for key, value in osauhingu_asutamise_dct.items():
-        if 'kapital' in key:
-            assotsiatsiooni_tabeli_data['osakapital'] = value
-        if 'index' in key:
-            assotsiatsiooni_tabeli_data['right_id_osanikud'] = value
-        assotsiatsiooni_tabeli_data['is_asutaja'] = 'On'
-    return assotsiatsiooni_tabeli_data
+def genereeri_many_to_many_tabelid(asutaja_dct,indeks):
+    '''
+    Kood parseb vormist tuleva multidict'i jsoni kujuliseks,
+    selleks et selle saaks andmebaasi ladustada.
+    '''
+    asutajad = {}
+    for key, value in asutaja_dct:
+        keys = key.split('-')
+        if len(keys) != 3:
+            continue
+        fuusJur, id, index_kapital = keys
+        if fuusJur not in ('fuus', 'jur'):
+            continue
+        if fuusJur not in asutajad:
+            asutajad[fuusJur] = {}
+        if id not in asutajad[fuusJur]:
+            asutajad[fuusJur][id] = {}
+        asutajad[fuusJur][id][index_kapital] = int(value) #valideeritud routes.py's
+        asutajad[fuusJur][id]['is_asutaja'] = 'On'
+        asutajad[fuusJur][id]['left_id_osauhingud']=indeks
+    tabel = {}
+    for fj, dct in asutajad.items():
+        tabel[fj] = [row for _, row in dct.items()]
+    return tabel
 
 
+###Osaühingu andmete kuvamisel vajaminevad andmed tulevad sellest päringust. 
 def pari_osauhingu_tabelid(osauhingu_nimi):
     with Session() as session:
         paring = session.query(Osauhingud.osauhingu_nimi,Osauhingud.registri_kood, Osauhingud.asutamise_kuupaev, Osauhingud.kapital).filter_by(osauhingu_nimi=osauhingu_nimi).first()
