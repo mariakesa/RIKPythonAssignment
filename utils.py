@@ -7,7 +7,8 @@ def init_db():
     import models
     Base.metadata.create_all(engine)
     with Session() as session:
-        pd.read_json('test_andmestik.json').to_sql('osauhingud',if_exists='append',con=engine)
+        #print(pd.read_json('test_andmestik.json'))
+        pd.read_json('test_andmestik.json').to_sql('osauhingud',if_exists='append',index=False,con=engine)
         fi_df=pd.read_json('fuusilised_isikud_test.json')
         fi_df['isikukood']=fi_df['isikukood'].astype(str)
         fi_df.to_sql('fuusilisest_isikust_osanikud',if_exists='append',con=engine)

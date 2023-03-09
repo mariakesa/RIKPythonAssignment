@@ -33,7 +33,7 @@ class Osauhingud(Base):
     index = Column(Integer, primary_key=True, autoincrement=True)
     osauhingu_nimi = Column(String(100), nullable=False)
     registri_kood = Column(Integer, nullable=False)
-    asutamise_kuupaev = Column(Date)
+    asutamise_kuupaev = Column(String(10))
     kapital = Column(Integer, nullable=False)
 
     fuusilised_osanikud = relationship(
