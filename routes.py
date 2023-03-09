@@ -140,7 +140,7 @@ def lisa_uus_osauhing_andmebaasi():
         for fj, dct in asutajad.items():
             tabel[fj] = [row for _, row in dct.items()]
         print(tabel)
-        #lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
-        #lisa_asutajad_andmebaasi(tabel)
+        lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
+        lisa_asutajad_andmebaasi(tabel)
     return redirect('/')
     

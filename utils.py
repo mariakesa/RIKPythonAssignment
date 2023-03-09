@@ -12,9 +12,9 @@ def init_db():
         fi_df=pd.read_json('fuusilised_isikud_test.json')
         fi_df['isikukood']=fi_df['isikukood'].astype(str)
         fi_df.to_sql('fuusilisest_isikust_osanikud',if_exists='append',con=engine)
-        pd.read_json('juriidilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',if_exists='append',con=engine)
-        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',if_exists='append',con=engine)
-        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',if_exists='append',con=engine)
+        pd.read_json('juriidilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',if_exists='append',index=False,con=engine)
+        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',if_exists='append',index=False, con=engine)
+        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',if_exists='append',index=False,con=engine)
         session.commit()
 
 
@@ -116,10 +116,10 @@ def lisa_asutajad_andmebaasi(asutajad):
     with Session() as session:
         if 'fuus' in asutajad.keys():
             fuus=pd.DataFrame(asutajad['fuus'])
-            fuus.to_sql('many_to_many_table_fuusilised_isikud',con=engine)
+            fuus.to_sql('many_to_many_table_fuusilised_isikud',index=False, if_exists='append', con=engine)
         if 'jur' in asutajad.keys():
             jur=pd.DataFrame(asutajad['jur'])
-            jur.to_sql('many_to_many_table_juriidilised_isikud', con=engine)
+            jur.to_sql('many_to_many_table_juriidilised_isikud', index=False,if_exists='append',con=engine)
         session.commit()
 
 def parse_multidict(osauhingu_asutamise_dct):
