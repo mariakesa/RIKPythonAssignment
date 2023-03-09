@@ -159,6 +159,8 @@ def total_capital_calculation(osauhingud_ilma_kapitalita, osauhing_assoc_1, osau
     '''
     Funktsioon genereerib firma osaühingu kogukapitali veeru kasutades eelnevalt genereeritud
     osanike ja many-to-many assotsiaani tabeleid. Tabel salvestatakse jsoni formaadis.
+    Pandase tabeli indeks tuleb muuta, et vältida off-by-one vea, mis tekib sellest et
+    kood on kohandatud sobima 1-põhise sqlite andmebaasi indekseerimisega.
     '''
     # Group association tables by "osauhing" and sum the "osamakse" column
     osauhing_assoc_1_sum = osauhing_assoc_1.groupby("left_id_osauhingud")["osakapital"].sum()
