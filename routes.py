@@ -103,6 +103,11 @@ def lisa_uus_osauhing_andmebaasi():
     if request.method == 'POST':
         print(request.form.keys())
         print('Shalala', request.form)
+        paring = osauhingu_paring_add_db(int(request.form['registrikood']))
+        print('boom', paring)
+        if len(paring)!=0:
+            return 'Registrikood juba eksisteerib andmebaasis!', 400
+
         kapital = 0
         for key, value in request.form.items():
             if key.endswith("kapital"):
@@ -121,6 +126,13 @@ def lisa_uus_osauhing_andmebaasi():
         osauhingu_asutamise_dct['registri_kood'] = request.form['registrikood']
         osauhingu_asutamise_dct['asutamise_kuupaev'] = request.form['asutamise_kuupaev']
         osauhingu_asutamise_dct['kapital']=kapital
+
+        ###Osauhingu andebaasi lisamine
+        lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
+        ###Osauhingu indeksi parimine
+        indeks=osauhingu_paring_add_db(int(osauhingu_asutamise_dct['registri_kood'])).iloc[0]['Index']
+        print('indeks',indeks)
+
         asutajad = {}
         for key, value in request.form.items():
             keys = key.split('-')
@@ -135,12 +147,12 @@ def lisa_uus_osauhing_andmebaasi():
                 asutajad[fuusJur][id] = {}
             asutajad[fuusJur][id][index_kapital] = int(value) #valideeritud eelpool
             asutajad[fuusJur][id]['is_asutaja'] = 'On'
+            asutajad[fuusJur][id]['left_id_osauhingud']=indeks
         print(asutajad)
         tabel = {}
         for fj, dct in asutajad.items():
             tabel[fj] = [row for _, row in dct.items()]
         print(tabel)
-        lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
         lisa_asutajad_andmebaasi(tabel)
     return redirect('/')
     

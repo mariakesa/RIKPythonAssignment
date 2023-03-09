@@ -68,14 +68,10 @@ def juur_isikud_rk_paring(registrikood):
     return paringu_tagastus
 
 def osauhingu_paring_add_db(registrikood):
-    with Session() as session:
-        paring = session.query(Osauhingud.index).\
-            filter(Osauhingud.registrikood==registrikood).all()
-        if len(paring)!=1:
-            print('Registrikood ei ole unikaalne!')
-            return None
-        else:
-            paringu_tagastus=int(paring[0])
+    with Session(bind=engine) as session:
+        paring = session.query(Osauhingud.index, Osauhingud.registri_kood).\
+            filter(Osauhingud.registri_kood==registrikood).all()
+    paringu_tagastus=pd.DataFrame(paring, columns=['Index', 'Registrikood'])
     return paringu_tagastus
 
 def fuus_isikud_asutamine_nimi_paring(marksona):
