@@ -10,19 +10,21 @@ from databases import Base
 many_to_many_table_fuusilised_isikud = Table(
     "many_to_many_table_fuusilised_isikud",
     Base.metadata,
-    Column("left_id_osauhingud", ForeignKey("osauhingud.index"), primary_key=True),
-    Column("right_id_osanikud", ForeignKey("fuusilisest_isikust_osanikud.index"), primary_key=True),
-    Column("osakapital"),
-    Column("is_asutaja")
+    Column("index", Integer, primary_key=True, autoincrement=True),
+    Column("left_id_osauhingud", Integer, ForeignKey("osauhingud.index")),
+    Column("right_id_osanikud", Integer, ForeignKey("fuusilisest_isikust_osanikud.index")),
+    Column("osakapital", Integer),
+    Column("is_asutaja", String(100))
 )
 
 many_to_many_table_juriidilised_isikud = Table(
     "many_to_many_table_juriidilised_isikud",
     Base.metadata,
-    Column("left_id_osauhingud", ForeignKey("osauhingud.index"), primary_key=True),
-    Column("right_id_osanikud", ForeignKey("juriidilisest_isikust_osanikud.index"), primary_key=True),
-    Column("osakapital"),
-    Column("is_asutaja")
+    Column("index", Integer, primary_key=True, autoincrement=True),
+    Column("left_id_osauhingud", Integer, ForeignKey("osauhingud.index")),
+    Column("right_id_osanikud", Integer, ForeignKey("juriidilisest_isikust_osanikud.index")),
+    Column("osakapital", Integer),
+    Column("is_asutaja", String(100))
 )
 
 class Osauhingud(Base):

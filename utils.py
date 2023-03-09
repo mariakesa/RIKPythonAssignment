@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
-from databases import Session,engine
+from databases import Session,engine, Base
 from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud, many_to_many_table_fuusilised_isikud, many_to_many_table_juriidilised_isikud
 import pandas as pd
 
 def init_db():
     import models
+    Base.metadata.create_all(engine)
     with Session() as session:
-        pd.read_json('test_andmestik.json').to_sql('osauhingud',con=engine)
+        pd.read_json('test_andmestik.json').to_sql('osauhingud',if_exists='append',con=engine)
         fi_df=pd.read_json('fuusilised_isikud_test.json')
         fi_df['isikukood']=fi_df['isikukood'].astype(str)
-        fi_df.to_sql('fuusilisest_isikust_osanikud',con=engine)
-        pd.read_json('juriidilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',con=engine)
-        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',con=engine)
-        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',con=engine)
+        fi_df.to_sql('fuusilisest_isikust_osanikud',if_exists='append',con=engine)
+        pd.read_json('juriidilised_isikud_test.json').to_sql('juriidilisest_isikust_osanikud',if_exists='append',con=engine)
+        pd.read_json('fuusilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_fuusilised_isikud',if_exists='append',con=engine)
+        pd.read_json('juriidilised_isikud_assotsiatsiooni_tabel_test.json').to_sql('many_to_many_table_juriidilised_isikud',if_exists='append',con=engine)
         session.commit()
 
 
@@ -144,6 +145,6 @@ def pari_osauhingu_tabelid(osauhingu_nimi):
                 .join(many_to_many_table_juriidilised_isikud, JuriidilisestIsikustOsanikud.index == many_to_many_table_juriidilised_isikud.c.right_id_osanikud)\
                 .join(Osauhingud, Osauhingud.index == many_to_many_table_juriidilised_isikud.c.left_id_osauhingud)\
                 .filter(Osauhingud.osauhingu_nimi == osauhingu_nimi).all()
-        juriidilised_osanikud_paringu_tagastus = pd.DataFrame(juriidilised_osanikud_paring, columns=['Juriidilisest isikust osaniku nimi','Registrikood','Osakapital','Asutaja'])
+        juriidilised_osanikud_paringu_tagastus = pd.DataFrame(juriidilised_osanikud_paring, columns=['Juriidilisest isikust osaniku nimi','Registrikood','Osakapital','Asutaja?'])
      
     return paringu_tagastus, fuusilised_osanikud_paringu_tagastus, juriidilised_osanikud_paringu_tagastus
