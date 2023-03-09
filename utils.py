@@ -2,12 +2,13 @@
 from databases import Session,engine, Base
 from models import Osauhingud, FuusilisestIsikustOsanikud, JuriidilisestIsikustOsanikud, many_to_many_table_fuusilised_isikud, many_to_many_table_juriidilised_isikud
 import pandas as pd
+from data_generation import genereeri_test_data_json
 
 def init_db():
     import models
     Base.metadata.create_all(engine)
+    genereeri_test_data_json()
     with Session() as session:
-        #print(pd.read_json('test_andmestik.json'))
         pd.read_json('test_andmestik.json').to_sql('osauhingud',if_exists='append',index=False,con=engine)
         fi_df=pd.read_json('fuusilised_isikud_test.json')
         fi_df['isikukood']=fi_df['isikukood'].astype(str)
