@@ -127,6 +127,24 @@
         sumDiv.innerText = "Kogukapital: " + sum + ' eurot';
     }
 
+    function validateForm() {
+        var sum = 0;
+        var inputs = document.getElementsByClassName("sum-input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value < 1) {
+                alert("Please enter a value greater than or equal to 1 for input " + inputs[i].name);
+                return false;
+            }
+            sum += parseInt(inputs[i].value) || 0;
+        }
+        if (sum < 2500) {
+            alert("The total sum of the inputs must be greater than or equal to 2500");
+            return false;
+        }
+        return true;
+    }
+    
+
     function otsiOsanikku(params) {
 
         const options = {
@@ -166,5 +184,13 @@
                 });
             } );
         }
+
+    //Add validation
+    var form = document.querySelector("form");
+    form.addEventListener("submit", function(event) {
+        if (!validateForm()) {
+            event.preventDefault();
+        }
+    });
 </script>
 {%endblock%}
