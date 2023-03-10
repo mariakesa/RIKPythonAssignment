@@ -123,5 +123,6 @@ def lisa_uus_osauhing_andmebaasi():
         ###Many-to-many tabelite genereerimine
         tabel=genereeri_many_to_many_tabelid(request.form.items(),indeks)
         lisa_asutajad_andmebaasi(tabel)
-    return redirect('/')
+        osauhingu_nimi = urllib.parse.unquote(osauhingu_asutamise_dct['osauhingu_nimi'])
+    return redirect('/osauhingud/'+osauhingu_nimi)
     
