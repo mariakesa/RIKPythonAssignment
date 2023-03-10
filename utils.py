@@ -159,6 +159,14 @@ def genereeri_many_to_many_tabelid(asutaja_dct,indeks):
         tabel[fj] = [row for _, row in dct.items()]
     return tabel
 
+## Päring, et veenduda, et uue osaühingu nimi on unikaalne (sest osaühingu vaatamise route sõltub osaühingu nimest)
+def nimede_paring(osauhingu_nimi):
+    with Session(bind=engine) as session:
+        paring = session.query(Osauhingud.osauhingu_nimi).\
+        filter(Osauhingud.osauhingu_nimi==osauhingu_nimi).all()
+    paringu_tagastus=pd.DataFrame(paring, columns=['Osaühingu nimi'])
+    return paringu_tagastus
+
 
 ###Osaühingu andmete kuvamisel vajaminevad andmed tulevad sellest päringust. 
 def pari_osauhingu_tabelid(osauhingu_nimi):

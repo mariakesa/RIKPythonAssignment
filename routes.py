@@ -108,6 +108,11 @@ def lisa_uus_osauhing_andmebaasi():
             return "Vigane kogukapital: summa alla miinimumnõude", 400
         print("Kapital", kapital)
 
+        #Osauhingu nime valideerimine
+        paring=nimede_paring(request.form['osauhingu_nimi'])
+        if len(paring)!=0:
+            return 'Selle nimega osaühing juba eksisteerib andmebaasis!', 400
+
         ###Osauhingu andebaasi lisamine
         osauhingu_asutamise_dct = {}
         osauhingu_asutamise_dct['osauhingu_nimi'] = request.form['osauhingu_nimi']
