@@ -1,198 +1,245 @@
-{% extends "base.html" %}
-
-{% block main %}
+{% extends "base.html" %} {% block main %}
 <div class="container">
-    <h2>Osaühingu asutamine</h2>
-    <form action="/osauhingu_asutamine/entry" method="POST" id="form">
-        {{osauhingu_asutamise_vorm.csrf_token}}
-        <div class="container">
-            <div class="form-group">
-                {{osauhingu_asutamise_vorm.osauhingu_nimi.label}}
-                {{osauhingu_asutamise_vorm.osauhingu_nimi}}
-            </div>
-            <div class="form-group">
-                {{osauhingu_asutamise_vorm.registrikood.label}}
-                {{osauhingu_asutamise_vorm.registrikood}}
-            </div>
-            <div class="form-group">
-                {{osauhingu_asutamise_vorm.asutamise_kuupaev.label}}
-                {{osauhingu_asutamise_vorm.asutamise_kuupaev}}
-            </div>
-        </div>
-        <div id="lisatud-fuus-asutajad">
-            <h6>Füüsilisest isikust asutajad</h6>
-        </div>
-        <div id="lisatud-jur-asutajad">
-            <h6>Juriidilisest isikust asutajad</h6>
-        </div>
-        <div id="kapitali-counter-cont">
-            <h6>Kogukapitali kalkulaator (tähelepanu, kogukapital peab olema vähemalt 2500 eurot!)</h6>
-            <div id="kapitali-counter"></div>
-        </div>
-        <div class="form-group">
-            {{osauhingu_asutamise_vorm.asuta}}
-        </div>
-    </form>
-    <div> Lisa osanikud </div>
-    <div>
-        <label for="explicit-label-name">Füüsilise isiku nimi: </label>
-        <input id="fuus_is_marksona" required type="text" value=""/>
-        <button onclick="otsiOsanikku({nimi: document.getElementById('fuus_is_marksona').value})">Otsi</button>
+  <h2>Osaühingu asutamine</h2>
+  <form action="/osauhingu_asutamine/entry" method="POST" id="form">
+    {{osauhingu_asutamise_vorm.csrf_token}}
+    <div class="container">
+      <div class="form-group">
+        {{osauhingu_asutamise_vorm.osauhingu_nimi.label}}
+        {{osauhingu_asutamise_vorm.osauhingu_nimi}}
+      </div>
+      <div class="form-group">
+        {{osauhingu_asutamise_vorm.registrikood.label}}
+        {{osauhingu_asutamise_vorm.registrikood}}
+      </div>
+      <div class="form-group">
+        {{osauhingu_asutamise_vorm.asutamise_kuupaev.label}}
+        {{osauhingu_asutamise_vorm.asutamise_kuupaev}}
+      </div>
     </div>
-    
-    <div>
-        <label for="explicit-label-name">Isikukood: </label>
-        <input id="fuus_is_ik" required type="text" value=""/>
-        <button onclick="otsiOsanikku({isikukood: document.getElementById('fuus_is_ik').value})">Otsi</button>   
+    <div id="lisatud-fuus-asutajad">
+      <h6>Füüsilisest isikust asutajad</h6>
     </div>
-    
-    <div>
-        <label for="explicit-label-name">Juriidilise isiku nimi: </label>
-        <input id="juur_is_marksona" required type="text" value=""/>
-        <button onclick="otsiOsanikku({jur_nimi: document.getElementById('juur_is_marksona').value})">Otsi</button>
+    <div id="lisatud-jur-asutajad">
+      <h6>Juriidilisest isikust asutajad</h6>
     </div>
-
-    <div>
-        <label for="explicit-label-name">Registrikood: </label>
-        <input id="juur_is_rk" name="fuus_is_marksona" required type="text" value=""/>
-        <button onclick="otsiOsanikku({registrikood: document.getElementById('juur_is_rk').value})">Otsi</button>
+    <div id="kapitali-counter-cont">
+      <h6>
+        Kogukapitali kalkulaator (tähelepanu, kogukapital peab olema vähemalt
+        2500 eurot!)
+      </h6>
+      <div id="kapitali-counter"></div>
     </div>
+    <div class="form-group">{{osauhingu_asutamise_vorm.asuta}}</div>
+  </form>
+  <div>Lisa osanikud</div>
+  <div>
+    <label for="explicit-label-name">Füüsilise isiku nimi: </label>
+    <input id="fuus_is_marksona" required type="text" value="" />
+    <button
+      onclick="otsiOsanikku({nimi: document.getElementById('fuus_is_marksona').value})"
+    >
+      Otsi
+    </button>
+  </div>
 
-    <div id="fuus-otsingu-tulemused">
-        <table id="fuus-otsingu-tabel" class="table"></table>
-    </div>
+  <div>
+    <label for="explicit-label-name">Isikukood: </label>
+    <input id="fuus_is_ik" required type="text" value="" />
+    <button
+      onclick="otsiOsanikku({isikukood: document.getElementById('fuus_is_ik').value})"
+    >
+      Otsi
+    </button>
+  </div>
 
-    <a href="/" class="btn btn-primary">Tagasi avalehele</a>
+  <div>
+    <label for="explicit-label-name">Juriidilise isiku nimi: </label>
+    <input id="juur_is_marksona" required type="text" value="" />
+    <button
+      onclick="otsiOsanikku({jur_nimi: document.getElementById('juur_is_marksona').value})"
+    >
+      Otsi
+    </button>
+  </div>
 
-<div class="container" id="edu_sonum">
-    {% if edu_sonum != None%}
-        {{edu_sonum}}
-    {% endif %}
-</div>
+  <div>
+    <label for="explicit-label-name">Registrikood: </label>
+    <input
+      id="juur_is_rk"
+      name="fuus_is_marksona"
+      required
+      type="text"
+      value=""
+    />
+    <button
+      onclick="otsiOsanikku({registrikood: document.getElementById('juur_is_rk').value})"
+    >
+      Otsi
+    </button>
+  </div>
 
-<script>
+  <div id="fuus-otsingu-tulemused">
+    <table id="fuus-otsingu-tabel" class="table"></table>
+  </div>
 
+  <a href="/" class="btn btn-primary">Tagasi avalehele</a>
 
+  <div class="container" id="edu_sonum">
+    {% if edu_sonum != None%} {{edu_sonum}} {% endif %}
+  </div>
+
+  <script>
     function wrapFormGroup(elem) {
-        var formGroup = document.createElement("div");
-        formGroup.className = "form-group";
-        formGroup.appendChild(elem);
-        return formGroup;
+      var formGroup = document.createElement("div");
+      formGroup.className = "form-group";
+      formGroup.appendChild(elem);
+      return formGroup;
     }
 
-    function addOsanikToForm(asutajaID,asutajaNimi,fuusJur) {
+    function addOsanikToForm(asutajaID, asutajaNimi, fuusJur) {
+      let id = fuusJur + "-" + asutajaID;
+      if (document.getElementById(id) != null) {
+        return;
+      }
+      var numAsutaja = document.getElementsByClassName(
+        fuusJur + "-asutaja"
+      ).length;
 
-        let id = fuusJur + "-" + asutajaID;
-        if (document.getElementById(id) != null) {
-            return;
-        }
-        var numAsutaja = document.getElementsByClassName(fuusJur + "-asutaja").length;
+      var box = document.createElement("div");
+      box.className = fuusJur + "-asutaja";
+      box.id = id;
 
-        var box = document.createElement("div");
-        box.className = fuusJur + "-asutaja";
-        box.id = id;
+      var nimi = document.createElement("div");
+      nimi.innerText = asutajaNimi;
+      box.appendChild(nimi);
 
-        var nimi = document.createElement("div");
-        nimi.innerText=asutajaNimi;
-        box.appendChild(nimi);
+      var container = document.getElementById(
+        "lisatud-" + fuusJur + "-asutajad"
+      );
 
-        var container = document.getElementById("lisatud-" + fuusJur + "-asutajad");
+      container.appendChild(box);
 
-        container.appendChild(box);
+      var input = document.createElement("input");
+      input.type = "int";
+      input.name = fuusJur + "-" + numAsutaja + "-osakapital";
+      input.className = "sum-input";
+      box.appendChild(wrapFormGroup(input));
 
-        var input = document.createElement("input");
-        input.type = "int";
-        input.name = fuusJur + "-" + numAsutaja + "-osakapital";
-        input.className = "sum-input";
-        box.appendChild(wrapFormGroup(input));
+      var input = document.createElement("input");
+      input.type = "hidden";
+      input.name = fuusJur + "-" + numAsutaja + "-right_id_osanikud";
+      input.value = asutajaID;
+      box.appendChild(wrapFormGroup(input));
 
-        var input = document.createElement("input");
-        input.type = "hidden";
-        input.name = fuusJur + "-" + numAsutaja + "-right_id_osanikud";
-        input.value =   asutajaID;
-        box.appendChild(wrapFormGroup(input));
-
-        document.addEventListener("input", function(event) {
+      document.addEventListener("input", function (event) {
         if (event.target && event.target.classList.contains("sum-input")) {
-            calculateSum();
+          calculateSum();
         }
-    });
+      });
     }
 
     function calculateSum() {
-        sumDiv=document.getElementById('kapitali-counter')
-        var sum = 0;
-        var inputs = document.getElementsByClassName("sum-input");
-        for (var i = 0; i < inputs.length; i++) {
-            sum += parseInt(inputs[i].value) || 0;
-        }
-        sumDiv.innerText = "Kogukapital: " + sum + ' eurot';
+      sumDiv = document.getElementById("kapitali-counter");
+      var sum = 0;
+      var inputs = document.getElementsByClassName("sum-input");
+      for (var i = 0; i < inputs.length; i++) {
+        sum += parseInt(inputs[i].value) || 0;
+      }
+      sumDiv.innerText = "Kogukapital: " + sum + " eurot";
     }
 
     function validateForm() {
-        var sum = 0;
-        var inputs = document.getElementsByClassName("sum-input");
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].value < 1) {
-                alert("Please enter a value greater than or equal to 1 for input " + inputs[i].name);
-                return false;
-            }
-            sum += parseInt(inputs[i].value) || 0;
+      var sum = 0;
+      var inputs = document.getElementsByClassName("sum-input");
+      for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value < 1) {
+          alert(
+            "Please enter a value greater than or equal to 1 for input " +
+              inputs[i].name
+          );
+          return false;
         }
-        if (sum < 2500) {
-            alert("The total sum of the inputs must be greater than or equal to 2500");
-            return false;
-        }
-        return true;
+        sum += parseInt(inputs[i].value) || 0;
+      }
+      if (sum < 2500) {
+        alert(
+          "The total sum of the inputs must be greater than or equal to 2500"
+        );
+        return false;
+      }
+      return true;
     }
-    
 
     function otsiOsanikku(params) {
-
-        const options = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify( params )  
-        };
-        //Kood fetchib data 'osaniku_otsing' routest, et kuvada osanike andmeid ja neid lisada
-        fetch( 'osaniku_otsing', options )
-            .then( response => response.json() )
-            .then( response => {
-                
-                let datatable = response["id"].map(function(id, i) {
-                    if ("Füüsilisest isikust osaniku nimi" in response) {
-                        return [id,response["Füüsilisest isikust osaniku nimi"][i],response['Isikukood'][i],"fuus"];
-                    } else if ("Juriidilisest isikust osaniku nimi" in response) {
-                        return [id,response["Juriidilisest isikust osaniku nimi"][i],response['Registrikood'][i],"jur"];
-                    } else {
-                        return [];
-                    }
-                });
-                let kooditulp = datatable.length > 0 && datatable[0][3] === "fuus" ? "Isikukood" : "Registrikood"; 
-                $('#fuus-otsingu-tabel').DataTable({
-                    data: datatable,
-                    searching: false,
-                    destroy: true,
-                    columns: [
-                    { title: "Nimi", data: 1 },
-                    { title: kooditulp, data: 2 },
-                    { title: "Lisa asutaja", render: function(data, type, row) {
-                        return "<button onclick=\"addOsanikToForm(" + row[0] + ",'" + row[1] + "', '" + row[3] +"')\">Lisa asutaja</button>";
-                    }}
-                    ]
-                });
-            } );
-        }
+      const options = {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      };
+      //Kood fetchib data 'osaniku_otsing' routest, et kuvada osanike andmeid ja neid lisada
+      fetch("osaniku_otsing", options)
+        .then((response) => response.json())
+        .then((response) => {
+          let datatable = response["id"].map(function (id, i) {
+            if ("Füüsilisest isikust osaniku nimi" in response) {
+              return [
+                id,
+                response["Füüsilisest isikust osaniku nimi"][i],
+                response["Isikukood"][i],
+                "fuus",
+              ];
+            } else if ("Juriidilisest isikust osaniku nimi" in response) {
+              return [
+                id,
+                response["Juriidilisest isikust osaniku nimi"][i],
+                response["Registrikood"][i],
+                "jur",
+              ];
+            } else {
+              return [];
+            }
+          });
+          let kooditulp =
+            datatable.length > 0 && datatable[0][3] === "fuus"
+              ? "Isikukood"
+              : "Registrikood";
+          $("#fuus-otsingu-tabel").DataTable({
+            data: datatable,
+            searching: false,
+            destroy: true,
+            columns: [
+              { title: "Nimi", data: 1 },
+              { title: kooditulp, data: 2 },
+              {
+                title: "Lisa asutaja",
+                render: function (data, type, row) {
+                  return (
+                    '<button onclick="addOsanikToForm(' +
+                    row[0] +
+                    ",'" +
+                    row[1] +
+                    "', '" +
+                    row[3] +
+                    "')\">Lisa asutaja</button>"
+                  );
+                },
+              },
+            ],
+          });
+        });
+    }
 
     //Add validation
     var form = document.querySelector("form");
-    form.addEventListener("submit", function(event) {
-        if (!validateForm()) {
-            event.preventDefault();
-        }
+    form.addEventListener("submit", function (event) {
+      if (!validateForm()) {
+        event.preventDefault();
+      }
     });
-</script>
-{%endblock%}
+  </script>
+  {%endblock%}
+</div>

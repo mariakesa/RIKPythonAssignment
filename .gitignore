@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/test.db
+/fuusilised_isikud_assotsiatsiooni_tabel_test.json
+/fuusilised_isikud_test.json
+/juriidilised_isikud_assotsiatsiooni_tabel_test.json
+/juriidilised_isikud_test.json
+/test_andmestik.json

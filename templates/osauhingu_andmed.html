@@ -1,62 +1,76 @@
-{% extends "base.html" %}
-
-{% block main %}
+{% extends "base.html" %} {% block main %}
 <div class="container">
-    <div class="col-6">
-        <h2>Osaühingu {{osauhingu_nimi}} andmed</h2>
+  <div class="col-6">
+    <h2>Osaühingu {{osauhingu_nimi}} andmed</h2>
+  </div>
+  <div class="col-6">
+    <div class="row">
+      <span style="color: lightsalmon; font-weight: bold">Osaühingu nimi:</span>
+      {{andmed[0].iloc[0]['Osaühingu nimi']}}
     </div>
-    <div class="col-6">
-        <div class="row">
-            <span style="color:lightsalmon;font-weight:bold;">Osaühingu nimi:</span> {{andmed[0].iloc[0]['Osaühingu nimi']}}
-        </div>
-        <div class="row">
-            <span style="color:pink;font-weight:bold;">Osaühingu registrikood:</span> {{andmed[0].iloc[0]['Registrikood']}}
-        </div>
-        <div class="row">
-            <span style="color:lightseagreen;font-weight:bold;">Osaühingu asutamise kuupäev:</span> {{andmed[0].iloc[0]['Asutamise kuupäev']}}
-        </div>
-        <div class="row">
-            <span style="color:rgb(21, 107, 42);font-weight:bold;">Osaühingu kapital:</span> {{andmed[0].iloc[0]['Kapital']}} eurot
-        </div>
-        <img src="https://api.dicebear.com/5.x/pixel-art/svg?seed={{ [1,n,100]|random() }}&size=96" alt="avatar"/>
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for column in andmed[1].columns %}
-                    <th>{{ column }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in andmed[1].values %}
-                <tr>
-                    {% for value in row %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <img src="https://api.dicebear.com/5.x/shapes/svg?seed={{ [1,n,100]|random() }}&size=96"alt="avatar"/>        
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for column in andmed[2].columns %}
-                    <th>{{ column }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in andmed[2].values %}
-                <tr>
-                    {% for value in row %}
-                    <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="/" class="btn btn-primary">Tagasi avalehele</a>
+    <div class="row">
+      <span style="color: pink; font-weight: bold"
+        >Osaühingu registrikood:</span
+      >
+      {{andmed[0].iloc[0]['Registrikood']}}
     </div>
+    <div class="row">
+      <span style="color: lightseagreen; font-weight: bold"
+        >Osaühingu asutamise kuupäev:</span
+      >
+      {{andmed[0].iloc[0]['Asutamise kuupäev']}}
+    </div>
+    <div class="row">
+      <span style="color: rgb(21, 107, 42); font-weight: bold"
+        >Osaühingu kapital:</span
+      >
+      {{andmed[0].iloc[0]['Kapital']}} eurot
+    </div>
+    <img
+      src="https://api.dicebear.com/5.x/pixel-art/svg?seed={{ [1,n,100]|random() }}&size=96"
+      alt="avatar"
+    />
+    <table class="table">
+      <thead>
+        <tr>
+          {% for column in andmed[1].columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in andmed[1].values %}
+        <tr>
+          {% for value in row %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <img
+      src="https://api.dicebear.com/5.x/shapes/svg?seed={{ [1,n,100]|random() }}&size=96"
+      alt="avatar"
+    />
+    <table class="table">
+      <thead>
+        <tr>
+          {% for column in andmed[2].columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in andmed[2].values %}
+        <tr>
+          {% for value in row %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="/" class="btn btn-primary">Tagasi avalehele</a>
+  </div>
 </div>
 {% endblock %}
