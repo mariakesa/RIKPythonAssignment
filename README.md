@@ -4,7 +4,7 @@ This is assignment for a job application at Registrite ja Infosüsteemide Keskus
 
 To run the application first install Poetry for Python dependency management https://python-poetry.org/docs/
 
-Clone the repository, cd to the project folder and run 'poetry init'.
+Clone the repository, cd to the project folder and run 'poetry install'.
 
 Next, run 'poetry run python app.py' in the top-level directory. The application is now running on localhost. 
 
