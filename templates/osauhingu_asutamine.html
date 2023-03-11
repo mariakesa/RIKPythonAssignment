@@ -28,7 +28,7 @@
         Kogukapitali kalkulaator (tähelepanu, kogukapital peab olema vähemalt
         2500 eurot!)
       </h6>
-      <div id="kapitali-counter"></div>
+      <div id="kapitali-counter">Kogukapital: 0 eurot</div>
     </div>
     <div class="form-group">{{osauhingu_asutamise_vorm.asuta}}</div>
   </form>
@@ -105,6 +105,8 @@
       if (div) {
         div.remove();
       }
+
+      calculateSum();
     }
 
     function addOsanikToForm(asutajaID, asutajaNimi, fuusJur) {
@@ -160,8 +162,8 @@
 
     function calculateSum() {
       sumDiv = document.getElementById("kapitali-counter");
-      var sum = 0;
-      var inputs = document.getElementsByClassName("sum-input");
+      let sum = 0;
+      let inputs = document.getElementsByClassName("sum-input");
       for (var i = 0; i < inputs.length; i++) {
         sum += parseInt(inputs[i].value) || 0;
       }
