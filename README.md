@@ -6,7 +6,7 @@ To run the application first install Poetry for Python dependency management htt
 
 Clone the repository, cd to the project folder and run 'poetry install'.
 
-Next, run 'poetry run python app.py' in the top-level directory. The application is now running on localhost. 
+Next, run 'poetry run python app.py' in the top-level directory. When you initialize for the first time,the test data will be automatically generated and it takes a few minutes. Please, be patient and wait for the '* Running on http://127.0.0.1:5000' message to appear. The application is now running on localhost. 
 
 When first initializing the project the application will automatically check if the test.db exists in the folder and generate test data if it doesn't exist. If you would like to regenerate the test data at some point, you can delete test.db (it's initialized in the top-level folder) and re-run app.py as above. 
 
