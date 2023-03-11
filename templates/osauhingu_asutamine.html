@@ -91,10 +91,20 @@
 
   <script>
     function wrapFormGroup(elem) {
-      var formGroup = document.createElement("div");
+      let formGroup = document.createElement("div");
       formGroup.className = "form-group";
       formGroup.appendChild(elem);
       return formGroup;
+    }
+
+    function handleRemoveButtonClick(removeButton) {
+      // Get a reference to the parent div element
+      const div = removeButton.closest("div");
+
+      // Remove the div element from the DOM
+      if (div) {
+        div.remove();
+      }
     }
 
     function addOsanikToForm(asutajaID, asutajaNimi, fuusJur) {
@@ -106,30 +116,30 @@
         fuusJur + "-asutaja"
       ).length;
 
-      var box = document.createElement("div");
+      let box = document.createElement("div");
       box.className = fuusJur + "-asutaja";
       box.id = id;
 
-      var nimi = document.createElement("div");
+      let nimi = document.createElement("div");
       nimi.innerText = asutajaNimi;
       box.appendChild(nimi);
 
-      var container = document.getElementById(
+      let erase_btn = document.createElement("button");
+      erase_btn.classList = "btn btn-primary";
+      erase_btn.type = "button";
+      erase_btn.innerText = "Eemalda";
+      erase_btn.setAttribute("onclick", "handleRemoveButtonClick(this)");
+
+      box.appendChild(erase_btn);
+
+      let container = document.getElementById(
         "lisatud-" + fuusJur + "-asutajad"
       );
 
-      container.appendChild(box);
-
-      var input = document.createElement("input");
+      let input = document.createElement("input");
       input.type = "int";
       input.name = fuusJur + "-" + numAsutaja + "-osakapital";
       input.className = "sum-input";
-      box.appendChild(wrapFormGroup(input));
-
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = fuusJur + "-" + numAsutaja + "-right_id_osanikud";
-      input.value = asutajaID;
       box.appendChild(wrapFormGroup(input));
 
       document.addEventListener("input", function (event) {
@@ -137,6 +147,15 @@
           calculateSum();
         }
       });
+
+      let id_input_hidden = document.createElement("input");
+      id_input_hidden.type = "hidden";
+      id_input_hidden.name = fuusJur + "-" + numAsutaja + "-right_id_osanikud";
+      id_input_hidden.value = asutajaID;
+      box.appendChild(wrapFormGroup(id_input_hidden));
+
+      //Append all the created elements to container
+      container.appendChild(box);
     }
 
     function calculateSum() {
