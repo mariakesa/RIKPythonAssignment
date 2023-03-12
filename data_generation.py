@@ -189,20 +189,17 @@ def total_capital_calculation(osauhingud_ilma_kapitalita, osauhing_assoc_1, osau
     # Merge the two association tables on "osauhing"
     osauhing_assoc_merged = pd.merge(
         osauhing_assoc_1_sum, osauhing_assoc_2_sum, on="left_id_osauhingud", how="inner")
-    pd.set_option('display.max_rows', 500)
-    print('boom', osauhing_assoc_merged)
+
     # Sum the two "osamakse" columns
     osauhing_assoc_merged_sum = osauhing_assoc_merged.sum(axis=1)
-    print('bada', osauhing_assoc_merged_sum)
 
     osauhingud_ilma_kapitalita.index = np.arange(
         1, len(osauhingud_ilma_kapitalita) + 1)
-    print('enne', osauhingud_ilma_kapitalita)
+
     # Add the new column "osakapital" to "osauhingud_ilma_kapitalita" with the calculated values
     osauhingud_ilma_kapitalita["kapital"] = osauhing_assoc_merged_sum
 
     osauhingud_kapitaliga = osauhingud_ilma_kapitalita
-    print('tada', osauhingud_kapitaliga)
 
     osauhingud_kapitaliga.to_json('test_andmestik.json')
 
