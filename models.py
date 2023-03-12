@@ -1,8 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, Table, BigInteger
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Table, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
-import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import relationship
 from databases import Base
 
@@ -12,7 +9,8 @@ many_to_many_table_fuusilised_isikud = Table(
     Base.metadata,
     Column("index", Integer, primary_key=True, autoincrement=True),
     Column("left_id_osauhingud", Integer, ForeignKey("osauhingud.index")),
-    Column("right_id_osanikud", Integer, ForeignKey("fuusilisest_isikust_osanikud.index")),
+    Column("right_id_osanikud", Integer, ForeignKey(
+        "fuusilisest_isikust_osanikud.index")),
     Column("osakapital", Integer),
     Column("is_asutaja", String(100))
 )
@@ -22,12 +20,18 @@ many_to_many_table_juriidilised_isikud = Table(
     Base.metadata,
     Column("index", Integer, primary_key=True, autoincrement=True),
     Column("left_id_osauhingud", Integer, ForeignKey("osauhingud.index")),
-    Column("right_id_osanikud", Integer, ForeignKey("juriidilisest_isikust_osanikud.index")),
+    Column("right_id_osanikud", Integer, ForeignKey(
+        "juriidilisest_isikust_osanikud.index")),
     Column("osakapital", Integer),
     Column("is_asutaja", String(100))
 )
 
+
 class Osauhingud(Base):
+    '''
+    Osaühingute tabel. Asutamise kuupäev tuli kodeerida stringina,
+    et seda frontendis õigesti kuvada.
+    '''
     __tablename__ = 'osauhingud'
 
     index = Column(Integer, primary_key=True, autoincrement=True)
@@ -48,20 +52,23 @@ class Osauhingud(Base):
         secondary=many_to_many_table_juriidilised_isikud,
         back_populates="osaniku_osauhingud",
         cascade="all, delete",
-        primaryjoin="Osauhingud.index == many_to_many_table_juriidilised_isikud.c.left_id_osauhingud",
-        secondaryjoin="JuriidilisestIsikustOsanikud.index == many_to_many_table_juriidilised_isikud.c.right_id_osanikud"
+        primaryjoin="Osauhingud.index == \
+            many_to_many_table_juriidilised_isikud.c.left_id_osauhingud",
+        secondaryjoin="JuriidilisestIsikustOsanikud.index == \
+            many_to_many_table_juriidilised_isikud.c.right_id_osanikud"
     )
 
     def __repr__(self):
-        return "<User(index='%s', osauhingu nimi='%s', registri kood='%s', asutamise kuupaev='%s')>" % (
-            self.index,
-            self.osauhingu_nimi,
-            self.registri_kood,
-            self.asutamise_kuupaev,
-        )
+        return f"<User(index={self.index}, osauhingu nimi={self.osauhingu_nimi},\
+            registrikood={self.registri_kood}, asutamise kuupaev={self.asutamise_kuupaev})>"
 
 
 class FuusilisestIsikustOsanikud(Base):
+    '''
+    Füüsilisest isikust osanike andmebaasi tabel.
+    Isikukood on kodeeritud stringina, sest isegi BigInt
+    andmetüüp ei mahutanud selle ära. 
+    '''
     __tablename__ = 'fuusilisest_isikust_osanikud'
 
     index = Column(Integer, primary_key=True, autoincrement=True)
@@ -75,8 +82,15 @@ class FuusilisestIsikustOsanikud(Base):
         cascade="all, delete",
     )
 
+    def __repr__(self):
+        return f"<User(index={self.index}, nimi={self.nimi},\
+            isikukood={self.isikukood}>"
+
 
 class JuriidilisestIsikustOsanikud(Base):
+    '''
+    Juriidilisest isikust osanike andmebaasi tabel.
+    '''
     __tablename__ = 'juriidilisest_isikust_osanikud'
 
     index = Column(Integer, primary_key=True, autoincrement=True)
@@ -90,5 +104,6 @@ class JuriidilisestIsikustOsanikud(Base):
         cascade="all, delete",
     )
 
-
-
+    def __repr__(self):
+        return f"<User(index={self.index}, nimi={self.nimi},\
+            registrikood={self.registrikood}>"
