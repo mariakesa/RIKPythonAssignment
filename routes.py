@@ -1,13 +1,18 @@
-from app import app
 from flask import render_template, redirect, request
-from forms import *
-from utils import *
 import pandas as pd
 import urllib
+from app import app
+from forms import *
+from utils import *
+
 
 @app.route('/', methods=['GET','POST'])
 @app.route('/avaleht',methods=['GET','POST'])
 def avaleht():
+    '''
+    Avaleht, initsialiseeritakse otsinguribad, mille täitmisel
+    sooritatakse SQLAlchemy päringud, mis asuvad utils.py's.
+    '''
     nimeline_otsing = NimelineOtsinguRiba()
     registri_numbri_otsing = RegistriOtsinguRiba()
     fuus_isikud_nimeline_otsing = FuusIsikudNimelineOtsing()
@@ -21,14 +26,18 @@ def avaleht():
     if registri_numbri_otsing.validate_on_submit():
         paringu_tagastus = registri_otsing_paring(registri_numbri_otsing.registrikood.data)
     if fuus_isikud_nimeline_otsing.validate_on_submit():
-        paringu_tagastus = fuus_isikud_nimi_paring(fuus_isikud_nimeline_otsing.fuus_is_marksona.data)
+        paringu_tagastus = fuus_isikud_nimi_paring(
+            fuus_isikud_nimeline_otsing.fuus_is_marksona.data
+            )
     if fuus_isikud_ik_otsing.validate_on_submit():
         paringu_tagastus = fuus_isikud_ik_paring(fuus_isikud_ik_otsing.isikukood.data)
     if juur_isikud_nimeline_otsing.validate_on_submit():
-        paringu_tagastus = juur_isikud_nimi_paring(juur_isikud_nimeline_otsing.juur_is_marksona.data)
+        paringu_tagastus = juur_isikud_nimi_paring(
+            juur_isikud_nimeline_otsing.juur_is_marksona.data
+            )
     if juur_isikud_rk_otsing.validate_on_submit():
         paringu_tagastus = juur_isikud_rk_paring(juur_isikud_rk_otsing.juur_is_registrikood.data)
-    return render_template('avaleht.html', 
+    return render_template('avaleht.html',
                             nimeline_otsing = nimeline_otsing, 
                             registri_otsing = registri_numbri_otsing,
                             fuus_isikud_nimeline_otsing = fuus_isikud_nimeline_otsing,
@@ -37,14 +46,24 @@ def avaleht():
                             juur_isikud_rk_otsing = juur_isikud_rk_otsing,
                             df=paringu_tagastus)
 
+
 @app.route('/osauhingud/<osauhingu_nimi>')
 def osauhingu_andmed(osauhingu_nimi):
+    '''
+    Osaühingu andmete kuvamise leht. Andmete kättesaamiseks sooritatakse
+    päring andmebaasi.
+    '''
     osauhingu_nimi = urllib.parse.unquote(osauhingu_nimi)
     andmed = pari_osauhingu_tabelid(osauhingu_nimi)
     return render_template('osauhingu_andmed.html',osauhingu_nimi=osauhingu_nimi,andmed=andmed)
 
+
 @app.route('/osaniku_otsing', methods=['POST'])
 def osaniku_otsing():
+    '''
+    Osaniku otsing teostatud läbi andmebaasi päringu, 
+    et kuvada osanikud osaühingu asutamise lehel.
+    '''
     args = request.json
     mapping = {
         'nimi': fuus_isikud_asutamine_nimi_paring,
@@ -59,33 +78,26 @@ def osaniku_otsing():
 
 @app.route('/osauhingu_asutamine', methods=['GET','POST'])
 def osauhingu_asutamine():
+    '''
+    Osaühingu asutamise leht. Lehel on Flaski vorm. 
+    Otsingud teostatakse Javascriptis kasutades fetch'i.
+    '''
     osauhingu_asutamise_vorm = OsauhinguAsutamiseVorm()
-    fuus_isikud_nimeline_otsing = FuusIsikudNimelineOtsing()
-    fuus_isikud_ik_otsing = FuusIsikudIsikukoodiOtsing()
-    juur_isikud_nimeline_otsing = JuriidilisedIsikudNimelineOtsing()
-    juur_isikud_rk_otsing = JuriidilisedIsikudRegistrikoodiOtsing()
-    otsing_dct = {}
-    otsing_dct['fuus_isikud_nimeline_otsing'] = fuus_isikud_nimeline_otsing
-    otsing_dct['fuus_isikud_ik_otsing'] = fuus_isikud_ik_otsing
-    otsing_dct['juur_isikud_nimeline_otsing'] = juur_isikud_nimeline_otsing
-    otsing_dct['juur_isikud_rk_otsing'] = juur_isikud_rk_otsing
-    fuus_paringu_tagastus={'columns':[],'data':[]}
-    juur_paringu_tagastus=pd.DataFrame()
-    if fuus_isikud_nimeline_otsing.validate_on_submit():
-        fuus_paringu_tagastus = fuus_isikud_asutamine_nimi_paring(fuus_isikud_nimeline_otsing.fuus_is_marksona.data)
-    if fuus_isikud_ik_otsing.validate_on_submit():
-        fuus_paringu_tagastus = fuus_isikud_asutamine_ik_paring(fuus_isikud_ik_otsing.isikukood.data)
-    if juur_isikud_nimeline_otsing.validate_on_submit():
-        juur_paringu_tagastus = juur_isikud_asutamine_nimi_paring(juur_isikud_nimeline_otsing.juur_is_marksona.data)
-    if juur_isikud_rk_otsing.validate_on_submit():
-        juur_paringu_tagastus = juur_isikud_asutamine_rk_paring(juur_isikud_rk_otsing.juur_is_registrikood.data)
-    else:
-        edu='Andmed ei ole andmebaasi salvestatud.'
-    return render_template('osauhingu_asutamine.html', osauhingu_asutamise_vorm=osauhingu_asutamise_vorm, edu_sonum=edu, 
-                           otsing_dct=otsing_dct,fuus_paringu_tagastus=fuus_paringu_tagastus, juur_paringu_tagastus=juur_paringu_tagastus)
+    edu='Andmed ei ole andmebaasi salvestatud.'
+    return render_template('osauhingu_asutamine.html', 
+                           osauhingu_asutamise_vorm=osauhingu_asutamise_vorm, 
+                           edu_sonum=edu)
+
 
 @app.route('/osauhingu_asutamine/entry', methods=['POST'])
 def lisa_uus_osauhing_andmebaasi():
+    '''
+    route osauhingu postitamiseks. Eraldi endpoint tuli teha, et
+    ühel lehel (osaühingu asutamise lehel) saaksid koos toimida
+    vorm ja otsingu ribad.
+    Samuti on implementeeritud andmebaasi sisendi osaline validatsioon
+    (teatud validatsioon tehaks ka vormi ja Javascripti tasemel).
+    '''
     if request.method == 'POST':
 
         #Registrikoodi valideerimine
@@ -123,7 +135,9 @@ def lisa_uus_osauhing_andmebaasi():
         lisa_osauhing_andmebaasi(osauhingu_asutamise_dct)
 
         ###Osauhingu indeksi parimine
-        indeks=osauhingu_paring_add_db(int(osauhingu_asutamise_dct['registri_kood'])).iloc[0]['Index']
+        indeks=osauhingu_paring_add_db(int(
+            osauhingu_asutamise_dct['registri_kood']))\
+            .iloc[0]['Index']
 
         ###Many-to-many tabelite genereerimine
         tabel=genereeri_many_to_many_tabelid(request.form.items(),indeks)
