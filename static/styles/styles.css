@@ -1,9 +1,28 @@
 #front-title {
-    font-family: 'Tilt Prism', serif;
-    font-size: 32px;
-    color: rgb(221, 93, 114);
+  font-family: "Tilt Prism", serif;
+  font-size: 32px;
+  color: rgb(221, 93, 114);
 }
 
+#ou_nimi {
+  color: lightsalmon;
+  font-weight: bold;
+}
+
+#ou_rk {
+  color: pink;
+  font-weight: bold;
+}
+
+#ou_kapital {
+  color: rgb(21, 107, 42);
+  font-weight: bold;
+}
+
+#ou_kuupaev {
+  color: lightseagreen;
+  font-weight: bold;
+}
 /*.fuus-asutaja-box {
     display: inline-block;
     border:rgb(221, 93, 114) 3px solid;
