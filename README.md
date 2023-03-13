@@ -1,6 +1,6 @@
 # RIKPythonAssignment
 
-This is assignment for a job application at Registrite ja Infosüsteemide Keskus. I made a solution in Flask, SQLAlchemy, Bootstrap and vanilla JavaScript. The aim of the application is to search and add companies to a registry. The application comes with scripts to automatically generate test data. 
+This is assignment for a job application at Registrite ja Infosüsteemide Keskus. I made a solution in Flask, SQLAlchemy, Pandas, Bootstrap and vanilla JavaScript. The aim of the application is to search and add companies to a registry. The application comes with scripts to automatically generate test data. 
 
 To run the application first install Poetry for Python dependency management https://python-poetry.org/docs/
 
