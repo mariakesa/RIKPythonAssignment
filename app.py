@@ -14,5 +14,7 @@ from routes import *
 
 test_db()
 
+#Andmete genereerimise korrektuse testimine
+
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
